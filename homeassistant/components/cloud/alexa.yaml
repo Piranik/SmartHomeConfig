@@ -1,0 +1,12 @@
+alexa:
+  filter:
+    include_entities:
+      - sensor.netatmo_indoor_temperature
+      - sensor.netatmo_outdoor_temperature
+  entity_config:
+    sensor.netatmo_indoor_temperature:
+      name: Indoor Temperature (Office)
+      description: Indoor Temperature
+    sensor.netatmo_outdoor_temperature:
+      name: Outdoor Temperature (Deck)
+      description: Outdoor Temperature

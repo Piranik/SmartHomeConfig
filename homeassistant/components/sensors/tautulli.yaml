@@ -1,0 +1,6 @@
+platform: tautulli
+api_key: !secret tautulli_apikey
+host: !secret tautulli_host
+port: !secret tautulli_port
+monitored_users:
+  - bacco007

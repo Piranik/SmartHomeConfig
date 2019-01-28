@@ -1,0 +1,19 @@
+platform: netatmo
+modules:
+  Indoor:
+    - temperature
+    - co2
+    - pressure
+    - noise
+    - humidity
+    - min_temp
+    - max_temp
+    - wifi_status
+  Outdoor:
+    - temperature
+    - pressure
+    - humidity
+    - min_temp
+    - max_temp
+    - rf_status
+    - battery_vp

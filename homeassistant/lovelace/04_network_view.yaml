@@ -1,0 +1,53 @@
+title: network
+icon: mdi:server-network
+cards:
+  - !include custom_header.yaml
+  - type: entities
+    title: Links
+    show_header_toggle: false
+    entities:
+      - type: weblink
+        name: Router
+        url: !secret router_url
+        icon: mdi:router-wireless
+      - type: weblink
+        name: Pi-Hole
+        url: !secret pihole_url
+        icon: mdi:lan
+
+  - type: entities
+    title: Status
+    show_header_toggle: false
+    entities:
+      - sensor.external_ipv4
+      - type: section
+        label: Speedtest
+      - entity: sensor.speedtest_ping
+        secondary_info: last-changed
+      - entity: sensor.speedtest_download
+        secondary_info: last-changed
+      - entity: sensor.speedtest_upload
+        secondary_info: last-changed
+      - type: call-service
+        icon: mdi:speedometer
+        name: Run Speedtest
+        action_name: Run Speedtest
+        service: sensor.update_speedtest
+      - type: section
+        label: fast.com
+      - entity: sensor.fast_com_download
+        secondary_info: last-changed
+      - type: call-service
+        icon: mdi:speedometer
+        name: Run Fast.com
+        action_name: Run Fast
+        service: sensor.update_fastdotcom
+  - type: custom:monster-card
+    card:
+      type: entities
+      title: Pi-Hole
+      show_header_toggle: false
+      secondary_info: last-changed
+    filter:
+      include:
+        - entity_id: sensor.pi_hole*

@@ -1,0 +1,7 @@
+platform: nsw_rural_fire_service_feed
+entity_namespace: "nswrfs"
+radius: 50
+categories:
+  - 'Emergency Warning'
+  - 'Watch and Act'
+  - 'Advice'

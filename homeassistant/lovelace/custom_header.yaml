@@ -1,0 +1,5 @@
+type: custom:compact-custom-header
+menu: true
+clock: notification, options, menu, options
+clock_format: 24
+clock_am_pm: false

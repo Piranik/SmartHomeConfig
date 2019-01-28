@@ -1,0 +1,4 @@
+platform: hadockermon
+host: !secret hadm_host
+port: !secret hadm_port
+name: docker

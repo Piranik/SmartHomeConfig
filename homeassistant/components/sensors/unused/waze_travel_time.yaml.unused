@@ -1,0 +1,5 @@
+platform: waze_travel_time
+name: Me to Destination
+origin: device_tracker.tb_iphonex
+destination: sensor.dest_address
+region: 'AU'

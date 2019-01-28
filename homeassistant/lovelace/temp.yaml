@@ -1,0 +1,27 @@
+title: Testing 123
+cards:
+  - !include custom_header.yaml
+  - type: entities
+    title: Waze
+    entities:
+      - sensor.me_to_destination
+      - input_select.destination
+  - type: map
+    entities:
+      - entity: device_tracker.tb_iphonex
+      - zone.home
+    title: Where is Thomas?
+  - type: custom:useful-markdown-card
+    content: >
+      ## Lovelace
+
+      Starting with Home Assistant 0.72, we're experimenting with a new way of defining your interface. We're calling it the **Lovelace UI**
+
+      Also, the current time is [[ sensor.time.state ]] [[ sensor.time.attributes.icon ]].
+  - type: custom:monster-card
+    card:
+      type: entities
+      title: Geolocation
+    filter:
+      include:
+        - entity_id: geo_location.*

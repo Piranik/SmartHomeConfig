@@ -1,0 +1,11 @@
+title: House
+id: House
+icon: mdi:airplane
+cards:
+  - !include custom_header.yaml
+  - type: sensor
+    entity: sensor.opensky
+    name: Overhead Aircraft
+    graph: line
+    unit: Aircraft
+    hours_to_show: 168

@@ -1,0 +1,3 @@
+platform: command_line
+name: Bin Day
+command: "python3 /config/custom_components/tb_binday.py"

@@ -1,0 +1,36 @@
+title: tbsmartho.me
+
+resources:
+  - url: /local/upcoming-media-card.js?v=0.3.4
+    type: js
+  - url: /local/tracker-card.js?v=0
+    type: js
+  - url: /local/group-card.js?v=0.0.2
+    type: js
+  - url: /local/monster-card.js?v=0.2.3
+    type: js
+  - url: /local/useful-markdown-card.js?v=0
+    type: js
+  - url: /local/mini-graph-card-bundle.js?v=0.1.0
+    type: module
+  - url: /local/custom-lovelace/compact-custom-header/compact-custom-header.js?v=0.2.9
+    type: js
+  - url: /local/mini-media-player-bundle.js?v=0.9.8
+    type: module
+  # - url: /local/button-card.js?v=0
+  #   type: module
+  - url: https://fonts.googleapis.com/css?family=Roboto+Condensed
+    type: css
+
+views:
+  - !include 00_home_view.yaml
+  - !include 01_house_view.yaml
+  - !include 02_weather_view.yaml
+  - !include 03_media_view.yaml
+  - !include 04_network_view.yaml
+  - !include 05_online_view.yaml
+  - !include 06_lights_view.yaml
+  - !include 07_flightradar_view.yaml
+  - !include 08_docker_view.yaml
+  - !include 99_hasettings_view.yaml
+  - !include temp.yaml

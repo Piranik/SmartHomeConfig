@@ -1,0 +1,4 @@
+#influxdb:
+  #title: InfluxDB
+  #icon: mdi:database
+  #url: !secret panel_iframe_influxdb_url

@@ -1,0 +1,14 @@
+platform: bom_forecast
+product_id: IDN11113
+name: Tamworth
+forecast_days: 6
+rest_of_today: True
+friendly: True
+friendly_state_format: '{min} to {max}, {summary}'
+monitored_conditions:
+  - 'max'
+  - 'min'
+  - 'chance_of_rain'
+  - 'possible_rainfall'
+  - 'summary'
+  - 'detailed_summary'

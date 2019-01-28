@@ -1,0 +1,8 @@
+alias: system_default_theme
+trigger:
+  platform: homeassistant
+  event: start
+action:
+  service: frontend.set_theme
+  data:
+    name: slate

@@ -1,0 +1,17 @@
+#################################################################
+#                                                               #
+#           Home Assistant Main Configuration File              #
+#                                                               #
+#################################################################
+
+homeassistant:
+  name: !secret home_name
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
+  unit_system: metric
+  time_zone: Australia/Sydney
+  packages: !include_dir_named components/packages
+  customize: !include_dir_merge_named customizations/entities
+  customize_domain: !include_dir_merge_named customizations/domains
+  customize_glob: !include_dir_merge_named customizations/globs

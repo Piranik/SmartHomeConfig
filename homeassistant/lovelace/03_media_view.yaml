@@ -1,0 +1,40 @@
+title: Media
+icon: mdi:television-classic
+cards:
+  - !include custom_header.yaml
+  - type: "custom:monster-card"
+    card:
+      title: Media Player Status
+      type: entities
+      show_header_toggle: false
+    filter:
+      include:
+        - domain: media_player
+
+  - type: "custom:monster-card"
+    card:
+      title: Media Player
+      type: entities
+      show_header_toggle: false
+    filter:
+      include:
+        - domain: media_player
+          options:
+            type: custom:mini-media-player
+            power_color: true
+            hide_volume: false
+            show_progress: false
+            scroll_info: true
+            group: true
+            idle_view: true
+            more_info: true
+            show_source: full
+
+  - type: "custom:monster-card"
+    card:
+      title: Remote
+      type: entities
+      show_header_toggle: false
+    filter:
+      include:
+        - domain: remote

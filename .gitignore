@@ -1,57 +1,49 @@
 # Specific Keeps
 !.gitkeep
 !*.yaml
+!*.yml
 !.gitignore
 !*.md
 !radarr/config.xml
 
 # Extension Ignores
-# *.log
-# *.db
-# *.db-shm
-# *.db-wal
-# *.db-journal
-# *.pyc
-# *.sqlite
-# *.key
-# *.pub
-# *.crt
-# *.ca-bundle
-# *.zip
-# *.csr
-# *.pid
-# ._*
-# *.lock
-# *.conf
+*.log
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.pyc
+*.sqlite
+*.key
+*.pub
+*.crt
+*.ca-bundle
+*.zip
+*.csr
+*.pid
+._*
+*.lock
+*.conf
 
 # Directory Ignores
 homeassistant/.cloud
 homeassistant/.storage
 homeassistant/deps
 homeassistant/tts
-# influxdb
-# grafana
-# headphones
-# tautulli
-# sonarr
-# traefik
-# jackett
-# sonarr
-# node-red
-# mqtt-bridge
-# mosquitto
-# glances
-# dockermon
-# homebridge
-# organizr
-# radarr
-# shared
-# caddy
-# traefik2
-# portainer
-# lidarr
+.c9
+db
+jackett
+organizr
+portainer
+radarr
+sonarr
+tautulli
+traefik
+transmission
 
 # Specific Files
+docker/.env
+homeassistant/.spotify-token-cache
 homeassistant/secrets.yaml
 homeassistant/core
 homeassistant/.homekit.state
