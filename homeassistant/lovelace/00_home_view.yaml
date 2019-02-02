@@ -35,24 +35,29 @@ cards:
 
   - type: vertical-stack
     cards:
-      - type: custom:mini-graph-card
-        entity: sensor.speedtest_download
-        name: Download Speed (Speedtest)
-        line_color: '#3498db'
-        line_width: 7
-        hours_to_show: 72
-      - type: custom:mini-graph-card
-        entity: sensor.fast_com_download
-        name: Download Speed (fast.com)
-        line_color: '#3498db'
-        line_width: 7
-        hours_to_show: 72
-      - type: custom:mini-graph-card
-        entity: sensor.pi_hole_ads_percentage_blocked_today
-        name: "Ads Blocked Today (%)"
-        line_color: '#3498db'
-        line_width: 5
-        hours_to_show: 24
+    - type: custom:mini-graph-card
+      entity: sensor.speedtest_download
+      name: Download Speed (Speedtest)
+      line_width: 5
+      hours_to_show: 168
+      points_per_hour: 0.25
+      fill: true
+      animate: true
+    - type: custom:mini-graph-card
+      entity: sensor.fast_com_download
+      name: Download Speed (fast.com)
+      line_width: 5
+      hours_to_show: 168
+      points_per_hour: 0.25
+      fill: true
+      animate: true
+    - type: custom:mini-graph-card
+      entity: sensor.pi_hole_ads_percentage_blocked_today
+      name: "Ads Blocked Today (%)"
+      line_width: 5
+      hours_to_show: 168
+      points_per_hour: 0.25
+      animate: true
   # - type: horizontal-stack
   #   cards:
   #     - type: custom:mini-graph-card
@@ -69,29 +74,71 @@ cards:
 
   - type: vertical-stack
     cards:
-      - type: custom:mini-graph-card
-        entity: sensor.netatmo_indoor_temperature
-        name: Indoor Temp
-        line_color: '#3498db'
-        line_width: 5
-        hours_to_show: 72
-      - type: custom:mini-graph-card
-        entity: sensor.netatmo_outdoor_temperature
-        name: Outdoor Temp
-        line_color: '#e74e3c'
-        line_width: 5
-        hours_to_show: 72
+    - type: custom:mini-graph-card
+      entity: sensor.netatmo_indoor_temperature
+      name: Indoor Temp
+      line_color_above:
+        - value: 10
+          color: yellow
+        - value: 25
+          color: orange
+        - value: 35
+          color: red
+      line_color_below:
+        - value: 10
+          color: white
+        - value: 0
+          color: lightblue
+        - value: -2
+          color: blue
+        - value: -5
+          color: "#000000"
+      line_width: 5
+      hours_to_show: 72
+      points_per_hour: 0.25
+      extrema: true
+      animate: true
+    - type: custom:mini-graph-card
+      entity: sensor.netatmo_outdoor_temperature
+      name: Outdoor Temp
+      line_color_above:
+        - value: 10
+          color: yellow
+        - value: 25
+          color: orange
+        - value: 35
+          color: red
+      line_color_below:
+        - value: 10
+          color: white
+        - value: 0
+          color: lightblue
+        - value: -2
+          color: blue
+        - value: -5
+          color: "#000000"
+      line_width: 5
+      hours_to_show: 72
+      points_per_hour: 0.25
+      extrema: true
+      animate: true
 
   - type: entities
     title: Bin Day
     show_header_toggle: false
     entities:
-      - sensor.bin_day
-      - sensor.bin_type
+    - sensor.bin_day
+    - sensor.bin_type
 
-  - type: entities
-    title: Fuel Prices
-    show_header_toggle: false
+  - type: custom:mini-graph-card
+    name: Fuel Price Graph
+    animate: true
+    hours_to_show: 168
+    points_per_hour: 0.1
+    line_color:
+      - green
+      - red
     entities:
-      - sensor.fuelcheck_bp_tamworth_p98
-      - sensor.fuelcheck_caltex_tamworth_orana_p98
+    - entity: sensor.fuelcheck_bp_tamworth_p98
+    - entity: sensor.fuelcheck_caltex_tamworth_orana_p98
+    

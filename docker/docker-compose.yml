@@ -163,6 +163,27 @@ services:
       - traefik.port=7878
       - traefik.enable=true
 
+  lidarr:
+    container_name: "lidarr"
+    image: linuxserver/lidarr
+    restart: always
+    volumes:
+      - ${HOMEDIR}/lidarr:/config
+      - ${PCDIR}/Music:/music
+      - ${PCDIR}/DL:/downloads
+    ports:
+      - 8686:8686
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Australia/Sydney
+    labels:
+      - traefik.frontend.rule=Host:lidarr.tbsmartho.me
+      - traefik.backend=lidarr
+      #- traefik.docker.network=traefik_public
+      - traefik.port=8686
+      - traefik.enable=true
+
   sonarr:
     container_name: "sonarr"
     image: linuxserver/sonarr
@@ -171,8 +192,8 @@ services:
       - ${HOMEDIR}/sonarr:/config:rw
       - ${PCDIR}/TVShows:/tv:rw
       - ${PCDIR}/DL:/downloads:rw
-    # ports:
-    #   - 8989:8989
+    ports:
+      - 8989:8989
     networks:
       - internal
       - external
@@ -222,7 +243,7 @@ services:
       - 1.0.0.1
     volumes:
       - ${PCDIR}/DL:/data/completed:rw
-      - ${PCDIR}/DL:/downloads/incomplete:rw
+      - ${PCDIR}/DL:/data/incomplete:rw
       - ${HOMEDIR}/transmission/config:/config
       - ${HOMEDIR}/transmission/watch:/watch
       - /etc/localtime:/etc/localtime:ro

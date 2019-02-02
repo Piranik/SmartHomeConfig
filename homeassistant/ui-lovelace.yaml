@@ -7,7 +7,7 @@ title: tbsmartho.me
 resources:
 - url: /local/upcoming-media-card.js?v=0.3.4
   type: js
-- url: /local/tracker-card.js?v=0
+- url: /local/tracker-card.js?v=0.2.0
   type: js
 - url: /local/group-card.js?v=0.0.2
   type: js
@@ -15,7 +15,7 @@ resources:
   type: js
 - url: /local/useful-markdown-card.js?v=0
   type: js
-- url: /local/mini-graph-card-bundle.js?v=0.1.0
+- url: /local/mini-graph-card-bundle.js?v=0.2.0
   type: module
 - url: /local/custom-lovelace/compact-custom-header/compact-custom-header.js?v=0.2.9
   type: js
@@ -71,21 +71,26 @@ views:
     - type: custom:mini-graph-card
       entity: sensor.speedtest_download
       name: Download Speed (Speedtest)
-      line_color: '#3498db'
-      line_width: 7
-      hours_to_show: 72
+      line_width: 5
+      hours_to_show: 168
+      points_per_hour: 0.25
+      fill: true
+      animate: true
     - type: custom:mini-graph-card
       entity: sensor.fast_com_download
       name: Download Speed (fast.com)
-      line_color: '#3498db'
-      line_width: 7
-      hours_to_show: 72
+      line_width: 5
+      hours_to_show: 168
+      points_per_hour: 0.25
+      fill: true
+      animate: true
     - type: custom:mini-graph-card
       entity: sensor.pi_hole_ads_percentage_blocked_today
       name: "Ads Blocked Today (%)"
-      line_color: '#3498db'
       line_width: 5
-      hours_to_show: 24
+      hours_to_show: 168
+      points_per_hour: 0.25
+      animate: true
   # - type: horizontal-stack
   #   cards:
   #     - type: custom:mini-graph-card
@@ -105,15 +110,51 @@ views:
     - type: custom:mini-graph-card
       entity: sensor.netatmo_indoor_temperature
       name: Indoor Temp
-      line_color: '#3498db'
+      line_color_above:
+      - value: 10
+        color: yellow
+      - value: 25
+        color: orange
+      - value: 35
+        color: red
+      line_color_below:
+      - value: 10
+        color: white
+      - value: 0
+        color: lightblue
+      - value: -2
+        color: blue
+      - value: -5
+        color: "#000000"
       line_width: 5
       hours_to_show: 72
+      points_per_hour: 0.25
+      extrema: true
+      animate: true
     - type: custom:mini-graph-card
       entity: sensor.netatmo_outdoor_temperature
       name: Outdoor Temp
-      line_color: '#e74e3c'
+      line_color_above:
+      - value: 10
+        color: yellow
+      - value: 25
+        color: orange
+      - value: 35
+        color: red
+      line_color_below:
+      - value: 10
+        color: white
+      - value: 0
+        color: lightblue
+      - value: -2
+        color: blue
+      - value: -5
+        color: "#000000"
       line_width: 5
       hours_to_show: 72
+      points_per_hour: 0.25
+      extrema: true
+      animate: true
 
   - type: entities
     title: Bin Day
@@ -122,12 +163,17 @@ views:
     - sensor.bin_day
     - sensor.bin_type
 
-  - type: entities
-    title: Fuel Prices
-    show_header_toggle: false
+  - type: custom:mini-graph-card
+    name: Fuel Price Graph
+    animate: true
+    hours_to_show: 168
+    points_per_hour: 0.1
+    line_color:
+    - green
+    - red
     entities:
-    - sensor.fuelcheck_bp_tamworth_p98
-    - sensor.fuelcheck_caltex_tamworth_orana_p98
+    - entity: sensor.fuelcheck_bp_tamworth_p98
+    - entity: sensor.fuelcheck_caltex_tamworth_orana_p98
 - title: House
   id: House
   icon: mdi:floor-plan
@@ -197,12 +243,20 @@ views:
     clock: notification, options, menu, options
     clock_format: 24
     clock_am_pm: false
-  - type: history-graph
-    title: Home Temperature
+  - type: custom:mini-graph-card
+    name: Home Temperature
+    icon: mdi:weather-cloudy
+    animate: true
     hours_to_show: 48
+    line_color:
+    - yellow
+    - red
     entities:
-    - sensor.netatmo_indoor_temperature
-    - sensor.netatmo_outdoor_temperature
+    - entity: sensor.netatmo_indoor_temperature
+      name: Indoor
+      labels: true
+    - entity: sensor.netatmo_outdoor_temperature
+      name: Outdoor
   - type: entities
     title: Home (Netatmo)
     show_header_toggle: false
@@ -225,12 +279,20 @@ views:
     - sensor.netatmo_outdoor_max_temp
     - sensor.netatmo_outdoor_min_temp
     - sensor.netatmo_outdoor_radio
-  - type: history-graph
-    title: BOM Temperature
+  - type: custom:mini-graph-card
+    name: Bom Temperature
+    icon: mdi:weather-cloudy
+    animate: true
     hours_to_show: 48
+    line_color:
+    - blue
+    - green
     entities:
-    - sensor.bom_air_temp_c
-    - sensor.bom_feels_like_c
+    - entity: sensor.bom_air_temp_c
+      name: Air Temp
+      labels: true
+    - entity: sensor.bom_feels_like_c
+      name: Feels Like
   - type: entities
     title: Tamworth Airport (BOM)
     show_header_toggle: false
@@ -374,6 +436,9 @@ views:
       secondary_info: last-changed
     filter:
       include:
+      - entity_id: sensor.pihole_status
+      - entity_id: script.enable_pihole
+      - entity_id: input_select.pihole_time
       - entity_id: sensor.pi_hole*
 - title: Online
   icon: mdi:download-network
@@ -620,46 +685,6 @@ views:
     - entity: device_tracker.tb_iphonex
     - zone.home
     title: Where is Thomas?
-  - type: horizontal-stack
-    cards:
-    - type: "custom:button-card"
-      entity: light.living_room_lights
-      icon: mdi:sofa
-      color: auto
-      action: more_info
-      default_color: rgb(255, 233, 155)
-      color_type: card
-      name: Living room
-      style:
-      - font-size: 12px
-      - font-weight: bold
-    - type: "custom:button-card"
-      entity: light.harry
-      color: auto
-      icon: mdi:ceiling-light
-      action: more_info
-      name: Ceiling
-      style:
-      - font-size: 12px
-      - font-weight: bold
-    - type: "custom:button-card"
-      entity: light.ron
-      color: auto
-      icon: mdi:lamp
-      action: more_info
-      name: TV
-      style:
-      - font-size: 12px
-      - font-weight: bold
-    - type: "custom:button-card"
-      entity: light.snape
-      icon: mdi:floor-lamp
-      color: auto
-      action: more_info
-      name: Floor
-      style:
-      - font-size: 12px
-      - font-weight: bold
   - type: custom:useful-markdown-card
     content: >
       ## Lovelace

@@ -50,4 +50,7 @@ cards:
       secondary_info: last-changed
     filter:
       include:
+        - entity_id: sensor.pihole_status
+        - entity_id: script.enable_pihole
+        - entity_id: input_select.pihole_time
         - entity_id: sensor.pi_hole*

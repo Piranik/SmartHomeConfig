@@ -32,6 +32,7 @@ homeassistant/deps
 homeassistant/tts
 .c9
 db
+dockermon
 jackett
 organizr
 portainer
@@ -40,10 +41,12 @@ sonarr
 tautulli
 traefik
 transmission
+lidarr
 
 # Specific Files
 docker/.env
 homeassistant/.spotify-token-cache
+homeassistant/ip_bans.yaml
 homeassistant/secrets.yaml
 homeassistant/core
 homeassistant/.homekit.state

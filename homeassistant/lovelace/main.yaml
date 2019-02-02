@@ -3,7 +3,7 @@ title: tbsmartho.me
 resources:
   - url: /local/upcoming-media-card.js?v=0.3.4
     type: js
-  - url: /local/tracker-card.js?v=0
+  - url: /local/tracker-card.js?v=0.2.0
     type: js
   - url: /local/group-card.js?v=0.0.2
     type: js
@@ -11,7 +11,7 @@ resources:
     type: js
   - url: /local/useful-markdown-card.js?v=0
     type: js
-  - url: /local/mini-graph-card-bundle.js?v=0.1.0
+  - url: /local/mini-graph-card-bundle.js?v=0.2.0
     type: module
   - url: /local/custom-lovelace/compact-custom-header/compact-custom-header.js?v=0.2.9
     type: js
