@@ -150,8 +150,8 @@ services:
       - ${HOMEDIR}/radarr:/config
       - ${PCDIR}/Movies:/movies
       - ${PCDIR}/DL:/downloads
-    # ports:
-    #   - 7878:7878
+    ports:
+      - 7878:7878
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -182,6 +182,27 @@ services:
       - traefik.backend=lidarr
       #- traefik.docker.network=traefik_public
       - traefik.port=8686
+      - traefik.enable=true
+
+  sabnzbd:
+    image: "linuxserver/sabnzbd"
+    container_name: "sabnzbd"
+    volumes:
+      - ${HOMEDIR}/sabnzbd:/config
+      - ${PCDIR}/DL:/downloads
+      - ${PCDIR}/DL:/incomplete-downloads
+    ports:
+        - "8082:8080"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - traefik.frontend.rule=Host:sabnzbd.tbsmartho.me
+      - traefik.backend=sabnzbd
+      #- traefik.docker.network=traefik_public
+      - traefik.port=8080
       - traefik.enable=true
 
   sonarr:
@@ -371,23 +392,6 @@ services:
   #     homeassistant:
   #       condition: service_healthy
 
-  # lidarr:
-  #   container_name: "lidarr"
-  #   image: "lsioarmhf/lidarr"
-  #   restart: always
-  #   volumes:
-  #     - /home/pi/smarthome/lidarr:/config
-  #     - /home/pi/personalcloud/TVShows:/tv
-  #     - /home/pi/personalcloud/Music:/music
-  #     - /home/pi/personalcloud:/mnt/personalcloud
-  #     - /home/pi/personalcloud/DL:/downloads
-  #   ports:
-  #     - 8686:8686
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Australia/Sydney
-
   # ombi:
   #   container_name: "ombi"
   #   image: "linuxserver/ombi"
@@ -401,45 +405,41 @@ services:
   #     - PGID=1000
   #     - TZ=Australia/Sydney
 
-  # grafana:
-  #   container_name: grafana
-  #   image: proxx/grafana-armv7
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - /home/pi/smarthome/grafana:/var/lib/grafana
-  #     - /etc/timezone:/etc/timezone:ro
-  #   restart: on-failure
-  #   depends_on:
-  #     influxdb:
-  #       condition: service_healthy
-  #   environment:
-  #     - PUID = 1000
-  #     - PGID = 995
-  #     - TZ = Australia/Sydney
-  #   network_mode: host
-  #   user: "1000"
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ${HOMEDIR}/grafana:/var/lib/grafana
+      - /etc/timezone:/etc/timezone:ro
+    restart: on-failure
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ = Australia/Sydney
+    network_mode: host
+    user: ${PUID}
 
-  # influxdb:
-  #   container_name: influxdb
-  #   image: influxdb
-  #   ports:
-  #     - 8083:8083
-  #     - 8086:8086
-  #   volumes:
-  #     - /home/pi/smarthome/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-  #     - /home/pi/smarthome/influxdb:/var/lib/influxdb
-  #   restart: on-failure
-  #   network_mode: host
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-sI", "http://127.0.0.1:8086/ping"]
-  #     interval: 30s
-  #     timeout: 1s
-  #     retries: 24
-  #   environment:
-  #     - PUID = 1000
-  #     - PGID = 995
-  #     - TZ = Australia/Sydney
+  influxdb:
+    container_name: influxdb
+    image: influxdb
+    ports:
+      - 8083:8083
+      - 8086:8086
+    volumes:
+      - ${HOMEDIR}/influxdb:/var/lib/influxdb
+    restart: on-failure
+    network_mode: host
+    healthcheck:
+      test: ["CMD", "curl", "-sI", "http://127.0.0.1:8086/ping"]
+      interval: 30s
+      timeout: 1s
+      retries: 24
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Australia/Sydney
 
 networks:
   external:

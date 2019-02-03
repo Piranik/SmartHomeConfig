@@ -42,6 +42,7 @@ tautulli
 traefik
 transmission
 lidarr
+sabnzbd
 
 # Specific Files
 docker/.env

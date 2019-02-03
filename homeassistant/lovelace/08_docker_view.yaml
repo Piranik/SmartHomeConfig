@@ -12,15 +12,20 @@ cards:
         url: http://tbsmartho.me:9000
         icon: mdi:router-wireless
 
-  - type: custom:monster-card
-    card:
-      type: entities
-      title: Start/Stop Containers
-      show_header_toggle: false
-      secondary_info: last-changed
-    filter:
-      include:
-        - entity_id: switch.docker*
+  - type: entities
+    title: Docker
+    show_header_toggle: false
+    entities:
+      - type: custom:auto-entities
+        card:
+          type: custom:fold-entity-row
+          head:
+            type: section
+            label: Start/Stop Containers
+          open: true
+        filter:
+          include:
+            - entity_id: switch.docker*
 
   - type: custom:monster-card
     card:

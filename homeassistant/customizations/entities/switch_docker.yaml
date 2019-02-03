@@ -39,3 +39,12 @@ switch.docker_traefik:
 
 switch.docker_watchtower:
   friendly_name: Watchtower
+
+switch.docker_lidarr:
+  friendly_name: Lidarr
+
+switch.docker_transmission:
+  friendly_name: Transmission
+
+switch.docker_phpipam:
+  friendly_name: phpIPAM

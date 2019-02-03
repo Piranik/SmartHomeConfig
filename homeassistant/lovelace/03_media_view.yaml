@@ -23,12 +23,13 @@ cards:
             type: custom:mini-media-player
             power_color: true
             hide_volume: false
-            show_progress: false
+            show_progress: true
             scroll_info: true
             group: true
             idle_view: true
             more_info: true
             show_source: full
+            artwork: full-cover
 
   - type: "custom:monster-card"
     card:

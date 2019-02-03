@@ -3,9 +3,12 @@ id: House
 icon: mdi:airplane
 cards:
   - !include custom_header.yaml
-  - type: sensor
-    entity: sensor.opensky
+  - type: custom:mini-graph-card
     name: Overhead Aircraft
-    graph: line
-    unit: Aircraft
+    animate: true
     hours_to_show: 168
+    points_per_hour: 1
+    line_color:
+      - blue
+    entities:
+    - entity: sensor.opensky

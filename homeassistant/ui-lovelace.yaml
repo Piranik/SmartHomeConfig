@@ -13,16 +13,22 @@ resources:
   type: js
 - url: /local/monster-card.js?v=0.2.3
   type: js
-- url: /local/useful-markdown-card.js?v=0
+- url: /local/useful-markdown-card.js?v=dfc268
   type: js
-- url: /local/mini-graph-card-bundle.js?v=0.2.0
+- url: /local/mini-graph-card-bundle.js?v=0.2.1
   type: module
 - url: /local/custom-lovelace/compact-custom-header/compact-custom-header.js?v=0.2.9
   type: js
+- url: /local/waze-card/waze-card.js?v=1.1.1
+  type: js
 - url: /local/mini-media-player-bundle.js?v=0.9.8
   type: module
-  # - url: /local/button-card.js?v=0
-  #   type: module
+- url: /local/card-tools.js?v=297fcc
+  type: js
+- url: /local/fold-entity-row.js?v=6d11d3
+  type: js
+- url: /local/auto-entities.js?v=3cfd04
+  type: js
 - url: https://fonts.googleapis.com/css?family=Roboto+Condensed
   type: css
 
@@ -163,6 +169,16 @@ views:
     - sensor.bin_day
     - sensor.bin_type
 
+  # - type: custom:waze-card
+  #   name: Time To...
+  #   entities:
+  #     - entity:  sensor.tom_time_to_home
+  #       zone: zone.home
+  #       name: Home
+  #     - entity:  sensor.tom_time_to_work
+  #       zone: zone.trc
+  #       name: Work
+
   - type: custom:mini-graph-card
     name: Fuel Price Graph
     animate: true
@@ -170,7 +186,7 @@ views:
     points_per_hour: 0.1
     line_color:
     - green
-    - red
+    - '#e74c3c'
     entities:
     - entity: sensor.fuelcheck_bp_tamworth_p98
     - entity: sensor.fuelcheck_caltex_tamworth_orana_p98
@@ -326,16 +342,53 @@ views:
     - sensor.sun_nextdusk
     - sensor.sun_nextsetting
     - sensor.sun_nextmidnight
-  - type: picture-entity
-    title: BOM Radar
-    entity: weather.dark_sky
-    camera_image: camera.namoi_128k
-    show_name: false
-    show_state: false
+  - type: vertical-stack
+    cards:
+    - type: picture-entity
+      title: BOM Radar (Namoi 128km)
+      entity: camera.namoi_128k
+      show_name: false
+      show_state: false
+      tap_action:
+        action: more-info
+      hold_action:
+        action: more-info
+    - type: picture-entity
+      title: BOM Radar (Moree 256km)
+      entity: camera.moree_256k
+      show_name: false
+      show_state: false
+      tap_action:
+        action: more-info
+      hold_action:
+        action: more-info
   - type: iframe
     title: Windy
     url: https://embed.windy.com/embed2.html
     aspect_ratio: 100%
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: NSW Warnings & Events
+      show_header_toggle: false
+      entities:
+      - type: custom:auto-entities
+        card:
+          type: custom:fold-entity-row
+          head:
+            type: section
+            label: Current Incidents
+          open: true
+        filter:
+          include:
+          - entity_id: "geo_location.nswrfs_*"
+        show_empty: true
+    - type: map
+      show_header_toggle: false
+      geo_location_sources:
+      - nsw_rural_fire_service_feed
+      entities:
+      - zone.home
 - title: Media
   icon: mdi:television-classic
   cards:
@@ -365,12 +418,13 @@ views:
           type: custom:mini-media-player
           power_color: true
           hide_volume: false
-          show_progress: false
+          show_progress: true
           scroll_info: true
           group: true
           idle_view: true
           more_info: true
           show_source: full
+          artwork: full-cover
 
   - type: "custom:monster-card"
     card:
@@ -400,7 +454,54 @@ views:
       name: Pi-Hole
       url: !secret pihole_url
       icon: mdi:lan
-
+  - type: entities
+    title: TBSmartHome Server
+    show_header_toggle: false
+    entities:
+    - sensor.ipv4_address_eno1
+    - sensor.ipv6_address_eno1
+    - sensor.external_ipv4
+    - sensor.last_boot
+    - sensor.disk_free
+    - sensor.disk_use_percent
+    - sensor.processor_use
+    - sensor.memory_use_percent
+    - sensor.memory_free
+    - sensor.memory_use
+    - sensor.network_in_eno1
+    - sensor.network_out_eno1
+  - type: horizontal-stack
+    cards:
+    - type: gauge
+      name: CPU Temp
+      unit: °C
+      entity: sensor.cpu_temperature
+      severity:
+        green: 0
+        yellow: 50
+        red: 60
+    - type: gauge
+      name: Disk Usage
+      unit: '%'
+      entity: sensor.disk_use_percent
+  - type: horizontal-stack
+    cards:
+    - type: gauge
+      name: CPU Usage
+      unit: '%'
+      entity: sensor.processor_use
+      severity:
+        green: 0
+        yellow: 25
+        red: 50
+    - type: gauge
+      name: Memory Usage
+      unit: '%'
+      entity: sensor.memory_use_percent
+      severity:
+        green: 0
+        yellow: 35
+        red: 50
   - type: entities
     title: Status
     show_header_toggle: false
@@ -466,6 +567,10 @@ views:
       url: !secret transmission_url
       icon: mdi:download
     - type: weblink
+      name: SABnzbd
+      icon: mdi:download
+      url: !secret sabnzbd_url
+    - type: weblink
       name: Plex
       url: !secret plex_url
       icon: mdi:television-guide
@@ -497,6 +602,8 @@ views:
       image_style: fanart
       date: ddmm
       max: 15
+      text_shadows: false
+      box_shadows: true
 
   - type: vertical-stack
     cards:
@@ -545,6 +652,20 @@ views:
     - sensor.transmission_active_torrents
     - sensor.transmission_paused_torrents
     - sensor.transmission_total_torrents
+
+  - type: entities
+    title: SABnzbd
+    show_header_toggle: false
+    entities:
+    - sensor.sabnzbd_status
+    - sensor.sabnzbd_speed
+    - sensor.sabnzbd_queue
+    - sensor.sabnzbd_queue_count
+    - sensor.sabnzbd_left
+    - sensor.sabnzbd_daily_total
+    - sensor.sabnzbd_weekly_total
+    - sensor.sabnzbd_monthly_total
+    - sensor.sabnzbd_total
 - title: Lights
   icon: mdi:lightbulb
   cards:
@@ -570,12 +691,15 @@ views:
     clock: notification, options, menu, options
     clock_format: 24
     clock_am_pm: false
-  - type: sensor
-    entity: sensor.opensky
+  - type: custom:mini-graph-card
     name: Overhead Aircraft
-    graph: line
-    unit: Aircraft
+    animate: true
     hours_to_show: 168
+    points_per_hour: 1
+    line_color:
+    - blue
+    entities:
+    - entity: sensor.opensky
 - title: Docker
   id: Docker
   icon: mdi:docker
@@ -594,15 +718,20 @@ views:
       url: http://tbsmartho.me:9000
       icon: mdi:router-wireless
 
-  - type: custom:monster-card
-    card:
-      type: entities
-      title: Start/Stop Containers
-      show_header_toggle: false
-      secondary_info: last-changed
-    filter:
-      include:
-      - entity_id: switch.docker*
+  - type: entities
+    title: Docker
+    show_header_toggle: false
+    entities:
+    - type: custom:auto-entities
+      card:
+        type: custom:fold-entity-row
+        head:
+          type: section
+          label: Start/Stop Containers
+        open: true
+      filter:
+        include:
+        - entity_id: switch.docker*
 
   - type: custom:monster-card
     card:
@@ -620,54 +749,93 @@ views:
     clock: notification, options, menu, options
     clock_format: 24
     clock_am_pm: false
-  - type: entities
-    title: Home Assistant
-    show_header_toggle: false
-    entities:
-    - sensor.home_assistant_uptime
-    - sensor.ha_current_version
-    - sensor.ha_latest_version
-    - type: call-service
-      icon: mdi:cube-send
-      name: Update Lovelace
-      action_name: Update Lovelace
-      service: shell_command.lovelace_gen
-  - type: custom:tracker-card
-    title: HA Custom Items Tracker
-    trackers:
-    - sensor.custom_card_tracker
-    - sensor.custom_component_tracker
-  - type: entities
-    title: Server
-    show_header_toggle: false
-    entities:
-    - sensor.ipv4_address_eno1
-    - sensor.ipv6_address_eno1
-    - sensor.external_ipv4
-    - sensor.last_boot
-    - sensor.disk_free
-    - sensor.disk_use_percent
-    - sensor.processor_use
-    - sensor.memory_use_percent
-    - sensor.memory_free
-    - sensor.memory_use
-    - sensor.network_in_eno1
-    - sensor.network_out_eno1
-  - type: custom:group-card
-    card:
-      type: entities
-      title: Devices
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: Home Assistant
       show_header_toggle: false
-    group: group.all_devices
+      entities:
+      - sensor.home_assistant_uptime
+      - sensor.ha_current_version
+      - sensor.ha_latest_version
+      - type: call-service
+        icon: mdi:cube-send
+        name: Update Lovelace
+        action_name: Update Lovelace
+        service: shell_command.lovelace_gen
+    - type: custom:tracker-card
+      title: Custom Items Tracker
+      trackers:
+      - sensor.custom_card_tracker
+      - sensor.custom_component_tracker
+  # - type: custom:group-card
+  #   card:
+  #     type: entities
+  #     title: Devices
+  #     show_header_toggle: false
+  #   group: group.all_devices
   - type: custom:monster-card
     card:
       type: entities
       title: Things that are broken
+      show_header_toggle: false
     filter:
       include:
       - state: "unknown"
       exclude:
       - entity_id: group.*
+  - type: entities
+    title: Groups
+    show_header_toggle: false
+    entities:
+    - type: custom:fold-entity-row
+      head: group.all_automations
+      group_config:
+        secondary_info: last-changed
+    - type: custom:auto-entities
+      card:
+        type: custom:fold-entity-row
+        head:
+          type: section
+          label: Devices at Home
+        group_config:
+          secondary_info: last-changed
+      filter:
+        include:
+        - domain: device_tracker
+          state: "home"
+    - type: custom:auto-entities
+      card:
+        type: custom:fold-entity-row
+        head:
+          type: section
+          label: Devices not at Home
+        group_config:
+          secondary_info: last-changed
+      filter:
+        include:
+        - domain: device_tracker
+          state: "not_home"
+    - type: custom:fold-entity-row
+      head: group.all_geolocation_events
+      group_config:
+        secondary_info: last-changed
+    - type: custom:fold-entity-row
+      head: all.lights
+      group_config:
+        secondary_info: last-changed
+    - type: custom:fold-entity-row
+      head: group.all_remotes
+      group_config:
+        secondary_info: last-changed
+    - type: custom:fold-entity-row
+      head: group.all_scripts
+      group_config:
+        secondary_info: last-changed
+    - type: custom:fold-entity-row
+      head: group.all_switches
+      group_config:
+        secondary_info: last-changed
 - title: Testing 123
   cards:
   - type: custom:compact-custom-header

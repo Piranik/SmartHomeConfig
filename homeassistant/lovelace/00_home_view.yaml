@@ -130,6 +130,16 @@ cards:
     - sensor.bin_day
     - sensor.bin_type
 
+  # - type: custom:waze-card
+  #   name: Time To...
+  #   entities:
+  #     - entity:  sensor.tom_time_to_home
+  #       zone: zone.home
+  #       name: Home
+  #     - entity:  sensor.tom_time_to_work
+  #       zone: zone.trc
+  #       name: Work
+
   - type: custom:mini-graph-card
     name: Fuel Price Graph
     animate: true
@@ -137,8 +147,8 @@ cards:
     points_per_hour: 0.1
     line_color:
       - green
-      - red
+      - '#e74c3c'
     entities:
     - entity: sensor.fuelcheck_bp_tamworth_p98
     - entity: sensor.fuelcheck_caltex_tamworth_orana_p98
-    
+

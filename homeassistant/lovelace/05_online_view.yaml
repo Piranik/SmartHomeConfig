@@ -20,6 +20,10 @@ cards:
         url: !secret transmission_url
         icon: mdi:download
       - type: weblink
+        name: SABnzbd
+        icon: mdi:download
+        url: !secret sabnzbd_url
+      - type: weblink
         name: Plex
         url: !secret plex_url
         icon: mdi:television-guide
@@ -51,6 +55,8 @@ cards:
         image_style: fanart
         date: ddmm
         max: 15
+        text_shadows: false
+        box_shadows: true
 
   - type: vertical-stack
     cards:
@@ -100,3 +106,16 @@ cards:
       - sensor.transmission_paused_torrents
       - sensor.transmission_total_torrents
 
+  - type: entities
+    title: SABnzbd
+    show_header_toggle: false
+    entities:
+      - sensor.sabnzbd_status
+      - sensor.sabnzbd_speed
+      - sensor.sabnzbd_queue
+      - sensor.sabnzbd_queue_count
+      - sensor.sabnzbd_left
+      - sensor.sabnzbd_daily_total
+      - sensor.sabnzbd_weekly_total
+      - sensor.sabnzbd_monthly_total
+      - sensor.sabnzbd_total
