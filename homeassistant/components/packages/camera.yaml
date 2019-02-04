@@ -1,1 +1,1 @@
-camera: !include_dir_merge_named ../cameras
+camera: !include_dir_list ../cameras

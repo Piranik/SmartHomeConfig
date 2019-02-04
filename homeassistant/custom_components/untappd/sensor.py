@@ -1,5 +1,6 @@
 """
 A component which allows you to get information from Untappd.
+
 For more details about this component, please refer to the documentation at
 https://github.com/custom-components/sensor.untappd
 """
@@ -15,7 +16,7 @@ from homeassistant.components.switch import (PLATFORM_SCHEMA)
 
 REQUIREMENTS = ['pyuntappd==0.0.5']
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ CONF_USERNAME = 'username'
 CONF_ID = 'id'
 CONF_SECRET = 'secret'
 
-COMPONENT_REPO = 'https://github.com/custom-components/sensor.untapped/'
+COMPONENT_REPO = 'https://github.com/custom-components/sensor.untappd/'
 
 WISHLIST_DATA = 'untappd_wishlist'
 

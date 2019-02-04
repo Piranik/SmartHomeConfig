@@ -21,15 +21,9 @@ cards:
         - domain: media_player
           options:
             type: custom:mini-media-player
-            power_color: true
-            hide_volume: false
-            show_progress: true
-            scroll_info: true
-            group: true
-            idle_view: true
-            more_info: true
-            show_source: full
-            artwork: full-cover
+            artwork: cover
+            source: full
+            info: scroll
 
   - type: "custom:monster-card"
     card:

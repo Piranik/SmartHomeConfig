@@ -1,0 +1,61 @@
+title: News
+id: News
+icon: mdi:newspaper
+cards:
+  - !include custom_header.yaml
+
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: Exchange Rates
+      show_header_toggle: false
+      entities:
+        - sensor.aud_to_usd
+        - sensor.aud_to_gbp
+        - sensor.aud_to_eur
+        - sensor.aud_to_nzd
+    - type: custom:mini-graph-card
+      name: Exchange Rates (Last Week)
+      hours_to_show: 168
+      points_per_hour: 0.25
+      entities:
+        - sensor.aud_to_usd
+        - sensor.aud_to_gbp
+        - sensor.aud_to_eur
+        - sensor.aud_to_nzd
+
+  - type: custom:list-card
+    icon: mdi:access-point
+    entity: sensor.rssfeeds_sky_news_uk
+    title: News - Sky News UK
+    row_limit: 5
+    columns:
+      - title: ''
+        field: title
+        add_link: link
+  - type: custom:list-card
+    icon: mdi:access-point
+    entity: sensor.rssfeeds_sydney_morning_herald
+    title: News - SMH
+    row_limit: 5
+    columns:
+      - title: ''
+        field: title
+        add_link: link
+  - type: custom:list-card
+    entity: sensor.rssfeeds_news_com_au
+    title: News - news.com.au
+    row_limit: 5
+    columns:
+      - title: ''
+        field: title
+        add_link: link
+  - type: custom:list-card
+    icon: mdi:access-point
+    entity: sensor.rssfeeds_cnn
+    title: News - CNN
+    row_limit: 5
+    columns:
+      - title: ''
+        field: title
+        add_link: link

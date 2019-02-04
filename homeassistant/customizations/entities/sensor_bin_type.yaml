@@ -1,8 +1,3 @@
 sensor.bin_type:
   friendly_name: Bin Type
   icon: mdi:delete-empty
-  templates:
-      icon_color: >
-        if (state === 'General Waste (Red Lid), Green Waste (Green Lid)') return 'rgb(139,69,19)';
-        if (state === 'General Waste (Red Lid), Recycling (Yellow Lid)') return 'rgb(128,128,128)';
-        return 'rgb(68,115,158)';

@@ -43,6 +43,8 @@ traefik
 transmission
 lidarr
 sabnzbd
+grafana
+influxdb
 
 # Specific Files
 docker/.env

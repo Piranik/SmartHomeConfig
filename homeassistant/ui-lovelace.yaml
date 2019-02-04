@@ -7,7 +7,7 @@ title: tbsmartho.me
 resources:
 - url: /local/upcoming-media-card.js?v=0.3.4
   type: js
-- url: /local/tracker-card.js?v=0.2.0
+- url: /local/tracker-card.js?v=0.3.0
   type: js
 - url: /local/group-card.js?v=0.0.2
   type: js
@@ -21,13 +21,15 @@ resources:
   type: js
 - url: /local/waze-card/waze-card.js?v=1.1.1
   type: js
-- url: /local/mini-media-player-bundle.js?v=0.9.8
+- url: /local/mini-media-player-bundle.js?v=1.0.0
   type: module
 - url: /local/card-tools.js?v=297fcc
   type: js
 - url: /local/fold-entity-row.js?v=6d11d3
   type: js
 - url: /local/auto-entities.js?v=3cfd04
+  type: js
+- url: /local/list-card.js?v=v0.0.7
   type: js
 - url: https://fonts.googleapis.com/css?family=Roboto+Condensed
   type: css
@@ -416,15 +418,9 @@ views:
       - domain: media_player
         options:
           type: custom:mini-media-player
-          power_color: true
-          hide_volume: false
-          show_progress: true
-          scroll_info: true
-          group: true
-          idle_view: true
-          more_info: true
-          show_source: full
-          artwork: full-cover
+          artwork: cover
+          source: full
+          info: scroll
 
   - type: "custom:monster-card"
     card:
@@ -741,6 +737,72 @@ views:
     filter:
       include:
       - entity_id: switch.docker*
+- title: News
+  id: News
+  icon: mdi:newspaper
+  cards:
+  -
+
+    type: custom:compact-custom-header
+    menu: true
+    clock: notification, options, menu, options
+    clock_format: 24
+    clock_am_pm: false
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: Exchange Rates
+      show_header_toggle: false
+      entities:
+      - sensor.aud_to_usd
+      - sensor.aud_to_gbp
+      - sensor.aud_to_eur
+      - sensor.aud_to_nzd
+    - type: custom:mini-graph-card
+      name: Exchange Rates (Last Week)
+      hours_to_show: 168
+      points_per_hour: 0.25
+      entities:
+      - sensor.aud_to_usd
+      - sensor.aud_to_gbp
+      - sensor.aud_to_eur
+      - sensor.aud_to_nzd
+
+  - type: custom:list-card
+    icon: mdi:access-point
+    entity: sensor.rssfeeds_sky_news_uk
+    title: News - Sky News UK
+    row_limit: 5
+    columns:
+    - title: ''
+      field: title
+      add_link: link
+  - type: custom:list-card
+    icon: mdi:access-point
+    entity: sensor.rssfeeds_sydney_morning_herald
+    title: News - SMH
+    row_limit: 5
+    columns:
+    - title: ''
+      field: title
+      add_link: link
+  - type: custom:list-card
+    entity: sensor.rssfeeds_news_com_au
+    title: News - news.com.au
+    row_limit: 5
+    columns:
+    - title: ''
+      field: title
+      add_link: link
+  - type: custom:list-card
+    icon: mdi:access-point
+    entity: sensor.rssfeeds_cnn
+    title: News - CNN
+    row_limit: 5
+    columns:
+    - title: ''
+      field: title
+      add_link: link
 - title: HA Settings
   icon: mdi:settings
   cards:

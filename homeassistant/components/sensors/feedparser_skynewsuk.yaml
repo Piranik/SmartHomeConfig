@@ -1,0 +1,8 @@
+platform: feedparser
+name: Sky News UK
+entity_namespace: rssfeeds
+feed_url: http://feeds.skynews.com/feeds/rss/home.xml
+inclusions:
+  - title
+  - link
+  - description

@@ -10,6 +10,9 @@ recorder:
     domains:
       - automation
       - input_select
+      - camera
+      - geo_location
+      - remote
     entities:
       - sun.sun
       - sensor.date
@@ -18,3 +21,9 @@ recorder:
       - sensor.newyork_time
       - sensor.plex_recently_added
       - sensor.sonarr_upcoming_media
+      - sensor.radarr_movies
+      - sensor.sonarr_series
+      - sensor.rssfeeds_cnn
+      - sensor.rssfeeds_sydney_morning_herald
+      - sensor.rssfeeds_news_com_au
+      - sensor.rssfeeds_sky_news_uk
