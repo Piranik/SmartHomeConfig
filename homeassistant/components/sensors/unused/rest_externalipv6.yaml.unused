@@ -1,0 +1,5 @@
+platform: rest
+resource: http://ipv6.icanhazip.com
+name: external_ipv6
+value_template: '{{ value }}'
+scan_interval: 86400

@@ -1,0 +1,134 @@
+title: Weather
+icon: mdi:weather-cloudy
+cards:
+  - !include custom_header.yaml
+  - type: custom:mini-graph-card
+    name: Home Temperature
+    icon: mdi:weather-cloudy
+    animate: true
+    hours_to_show: 48
+    line_color:
+      - yellow
+      - red
+    entities:
+      - entity: sensor.netatmo_indoor_temperature
+        name: Indoor
+        labels: true
+      - entity: sensor.netatmo_outdoor_temperature
+        name: Outdoor
+  - type: entities
+    title: Home (Netatmo)
+    show_header_toggle: false
+    entities:
+      - entity: sensor.netatmo_indoor_temperature
+        secondary_info: last-changed
+      - entity: sensor.netatmo_outdoor_temperature
+        secondary_info: last-changed
+      - type: section
+        label: Indoor Sensor
+      - sensor.netatmo_indoor_humidity
+      - sensor.netatmo_indoor_max_temp
+      - sensor.netatmo_indoor_min_temp
+      - sensor.netatmo_indoor_noise
+      - sensor.netatmo_indoor_pressure
+      - sensor.netatmo_indoor_wifi
+      - type: section
+        label: Outdoor Sensor
+      - sensor.netatmo_outdoor_humidity
+      - sensor.netatmo_outdoor_max_temp
+      - sensor.netatmo_outdoor_min_temp
+      - sensor.netatmo_outdoor_radio
+  - type: custom:mini-graph-card
+    name: Bom Temperature
+    icon: mdi:weather-cloudy
+    animate: true
+    hours_to_show: 48
+    line_color:
+      - blue
+      - green
+    entities:
+      - entity: sensor.bom_air_temp_c
+        name: Air Temp
+        labels: true
+      - entity: sensor.bom_feels_like_c
+        name: Feels Like
+  - type: entities
+    title: Tamworth Airport (BOM)
+    show_header_toggle: false
+    entities:
+      - sensor.bom_local_time
+      - sensor.bom_air_temp_c
+      - sensor.bom_feels_like_c
+      - sensor.bom_cloud
+      - sensor.bom_relative_humidity
+      - sensor.bom_pressure_mb
+      - sensor.bom_rain_today
+  - type: entities
+    title: Tamworth Airport (yr.no)
+    show_header_toggle: false
+    entities:
+      - entity: sensor.yr_temperature
+        secondary_info: last-changed
+      - sensor.yr_pressure
+      - sensor.yr_humidity
+      - sensor.yr_pressure
+      - sensor.yr_precipitation
+  - type: entities
+    title: Sun
+    show_header_toggle: false
+    entities:
+      - sensor.sun_state
+      - sensor.sun_solarangle
+      - sensor.sun_nextrising
+      - sensor.sun_nextdawn
+      - sensor.sun_nextnoon
+      - sensor.sun_nextdusk
+      - sensor.sun_nextsetting
+      - sensor.sun_nextmidnight
+  - type: vertical-stack
+    cards:
+    - type: picture-entity
+      title: BOM Radar (Namoi 128km)
+      entity: camera.namoi_128k
+      show_name: false
+      show_state: false
+      tap_action:
+        action: more-info
+      hold_action:
+        action: more-info
+    - type: picture-entity
+      title: BOM Radar (Moree 256km)
+      entity: camera.moree_256k
+      show_name: false
+      show_state: false
+      tap_action:
+        action: more-info
+      hold_action:
+        action: more-info
+  - type: iframe
+    title: Windy
+    url: https://embed.windy.com/embed2.html
+    aspect_ratio: 100%
+  - type: vertical-stack
+    cards:
+      - type: entities
+        title: NSW Warnings & Events
+        show_header_toggle: false
+        entities: 
+          - type: custom:auto-entities
+            card:
+              type: custom:fold-entity-row
+              head:
+                type: section
+                label: Current Incidents
+              open: true
+            filter:
+              include:
+                - entity_id: "geo_location.nswrfs_*"
+            show_empty: true
+      - type: map
+        show_header_toggle: false
+        geo_location_sources:
+          - nsw_rural_fire_service_feed
+        entities:
+          - zone.home

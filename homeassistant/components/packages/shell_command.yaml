@@ -1,0 +1,5 @@
+shell_command:
+  lovelace_gen: 'python /config/lovelace-gen.py > /config/lovelace-gen.log'
+  
+  pihole_enable: curl -X GET 'http://192.168.15.30/admin/api.php?enable&auth=yourauth'
+  pihole_disable: curl -X GET 'http://192.168.15.30/admin/api.php?disable={{ states.input_select.pihole_time.state }}&auth=yourauth'

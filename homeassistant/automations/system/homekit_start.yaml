@@ -1,0 +1,7 @@
+alias: system_homekit_start
+trigger:
+  platform: homeassistant
+  event: start
+action:
+  - delay: 00:01
+  - service: homekit.start

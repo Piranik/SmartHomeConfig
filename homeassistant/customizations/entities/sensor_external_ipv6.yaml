@@ -1,0 +1,3 @@
+sensor.external_ipv6:
+  friendly_name: External IP (IPv6)
+  icon: mdi:ip-network-outline

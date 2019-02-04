@@ -1,0 +1,19 @@
+homekit:
+  auto_start: false
+  name: Home Assistant
+  filter:
+    include_entities:
+      - sensor.netatmo_indoor_temperature
+      - sensor.netatmo_indoor_pressure
+      - sensor.netatmo_indoor_noise
+      - sensor.netatmo_indoor_max_temp
+      - sensor.netatmo_indoor_min_temp
+      - sensor.netatmo_outdoor_temperature
+      - sensor.netatmo_outdoor_humidity
+      - sensor.netatmo_outdoor_max_temp
+      - sensor.netatmo_outdoor_min_temp
+  entity_config:
+    sensor.netatmo_indoor_temperature:
+      name: Office Temp
+    sensor.netatmo_outdoor_temperature:
+      name: Deck Temp

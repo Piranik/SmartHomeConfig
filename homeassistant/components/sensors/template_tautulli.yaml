@@ -1,0 +1,11 @@
+platform: template
+sensors:
+  plex_topmovie:
+    friendly_name: Plex Top Movie
+    value_template: "{{state_attr('sensor.tautulli', 'Top Movie')}}"
+  plex_toptvshow:
+    friendly_name: Plex Top TV Show
+    value_template: "{{state_attr('sensor.tautulli', 'Top TV Show')}}"
+  plex_topuser:
+    friendly_name: Plex Top User
+    value_template: "{{state_attr('sensor.tautulli', 'Top User')}}"

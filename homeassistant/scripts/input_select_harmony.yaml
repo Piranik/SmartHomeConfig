@@ -1,0 +1,17 @@
+# input_select_harmony:
+# alias: "Select Input"
+# sequence:
+#   - service: remote.turn_on
+#     data_template:
+#       entity_id: remote.harmony_hub
+#       data:
+#         activity: >
+#           {% if is_state("input_select.bedroom_tv", "PowerOff") %}
+#               -1
+#           {% elif is_state("input_select.bedroom_tv", "Watch TV") %}
+#               36599052
+#           {% elif is_state("input_select.bedroom_tv", "Watch Apple TV") %}
+#               36599315
+#           {% elif is_state("input_select.bedroom_tv", "Watch Smart TV") %}
+#               36603925
+#           {% endif %}

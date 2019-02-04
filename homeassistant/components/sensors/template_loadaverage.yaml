@@ -1,0 +1,5 @@
+platform: template
+sensors:
+  load:
+    friendly_name: "Load Averages"
+    value_template: '{{states.sensor.load_1m.state|round(2)}}, {{states.sensor.load_5m.state|round(2)}}, {{states.sensor.load_15m.state|round(2)}} (1, 5, 15 min)'

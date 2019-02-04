@@ -1,0 +1,50 @@
+switch.docker_airconnect:
+  friendly_name: AirConnect
+
+switch.docker_cloud9:
+  friendly_name: Cloud9 IDE
+
+switch.docker_docker_cleanup:
+  friendly_name: Docker Cleanup
+
+switch.docker_ha_dockermon:
+  friendly_name: HA Dockermon
+
+switch.docker_homeassistant:
+  friendly_name: Home Assistant
+
+switch.docker_jackett:
+  friendly_name: Jackett
+
+switch.docker_netdata:
+  friendly_name: NetData 
+
+switch.docker_organizr:
+  friendly_name: Organizr
+
+switch.docker_portainer:
+  friendly_name: Portainer
+
+switch.docker_radarr:
+  friendly_name: Radarr
+
+switch.docker_sonarr:
+  friendly_name: Sonarr
+
+switch.docker_tautulli:
+  friendly_name: Tautulli
+
+switch.docker_traefik:
+  friendly_name: Traefik
+
+switch.docker_watchtower:
+  friendly_name: Watchtower
+
+switch.docker_lidarr:
+  friendly_name: Lidarr
+
+switch.docker_transmission:
+  friendly_name: Transmission
+
+switch.docker_phpipam:
+  friendly_name: phpIPAM

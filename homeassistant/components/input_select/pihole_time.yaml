@@ -1,0 +1,13 @@
+pihole_time:
+  name: Disable Time (seconds)
+  options:
+    - Select Time
+    - 10
+    - 30
+    - 60
+    - 300
+    - 600
+    - 900
+    - 1800
+    - 3600
+  initial: Select Time
