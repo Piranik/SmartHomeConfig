@@ -1,8 +1,0 @@
-platform: feedparser
-name: CNN
-entity_namespace: rssfeeds
-feed_url: http://rss.cnn.com/rss/edition.rss
-inclusions:
-  - title
-  - link
-  - description

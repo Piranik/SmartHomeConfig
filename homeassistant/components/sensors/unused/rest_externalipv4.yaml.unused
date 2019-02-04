@@ -1,5 +1,0 @@
-platform: rest
-resource: http://ipv4.icanhazip.com
-name: external_ipv4
-value_template: '{{ value }}'
-scan_interval: 86400

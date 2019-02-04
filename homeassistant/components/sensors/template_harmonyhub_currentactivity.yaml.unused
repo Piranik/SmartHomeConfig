@@ -1,5 +1,0 @@
-platform: template
-sensors:
-  harmony_hub_currentactivity:
-    friendly_name: 'Current Activity'
-    value_template: '{{ states.remote.harmony_hub.attributes.current_activity }}'

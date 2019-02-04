@@ -1,5 +1,0 @@
-name: !secret work_name
-latitude: !secret work_latitude
-longitude: !secret work_longitude
-icon: !secret work_icon
-radius: !secret work_radius
