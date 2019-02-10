@@ -24,6 +24,7 @@
 ._*
 *.lock
 *.conf
+*.pickle
 
 # Directory Ignores
 homeassistant/.cloud
@@ -45,6 +46,8 @@ lidarr
 sabnzbd
 grafana
 influxdb
+nodered
+prometheus
 
 # Specific Files
 docker/.env

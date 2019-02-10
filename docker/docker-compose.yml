@@ -26,7 +26,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker:/var/lib/docker
 
-  docker-mon:
+  ha-dockermon:
     image: philhawthorne/ha-dockermon
     container_name: ha_dockermon
     restart: always
@@ -36,10 +36,34 @@ services:
     ports:
       - 8126:8126
 
+  glances:
+    container_name: glances
+    image: nicolargo/glances
+    restart: always
+    pid: host
+    network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 61208:61208
+    environment:
+      - "GLANCES_OPT=-w"
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - traefik.frontend.rule=Host:glances.tbsmartho.me
+      - traefik.port=61208
+      - traefik.enable=true
+
   homeassistant:
     container_name: homeassistant
     image: homeassistant/home-assistant
     restart: on-failure
+    depends_on:
+      - influxdb
+      - mysql
+      - ha-dockermon
     volumes:
       - ${HOMEDIR}/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
@@ -50,15 +74,11 @@ services:
       - TZ=${TZ}
     labels:
       - traefik.frontend.rule=Host:homeassistant.tbsmartho.me
-      #- traefik.docker.network=traefik_public
       - traefik.port=8123
       - traefik.enable=true
-    # networks:
-    #   - internal
-    #   - traefik_public
     network_mode: "host"
-    # ports:
-    #   - 8123:8123
+    ports:
+      - 8123:8123
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:8123"]
       interval: 30s
@@ -79,36 +99,35 @@ services:
       - traefik.port=9117
       - traefik.enable=true
 
-  netdata:
-    container_name: netdata
-    image: netdata/netdata
-    hostname: tbsmarthome
-    ports:
-      - 19999:19999
-    cap_add:
-      - SYS_PTRACE
-    security_opt:
-      - apparmor:unconfined
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    labels:
-      - traefik.frontend.rule=Host:netdata.tbsmartho.me
-      #- traefik.docker.network=traefik_public
-      - traefik.port=19999
-      - traefik.enable=true
+  # netdata:
+  #   container_name: netdata
+  #   image: netdata/netdata
+  #   hostname: tbsmarthome
+  #   ports:
+  #     - 19999:19999
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   security_opt:
+  #     - apparmor:unconfined
+  #   volumes:
+  #     - /proc:/host/proc:ro
+  #     - /sys:/host/sys:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   labels:
+  #     - traefik.frontend.rule=Host:netdata.tbsmartho.me
+  #     #- traefik.docker.network=traefik_public
+  #     - traefik.port=19999
+  #     - traefik.enable=true
 
   organizr:
     container_name: organizr
     image: lsiocommunity/organizr
     ports:
       - 81:80
-      # - 443:443
     volumes:
       - ${HOMEDIR}/organizr:/config:rw
     environment:
@@ -123,15 +142,14 @@ services:
       retries: 5
     labels:
       - traefik.frontend.rule=Host:organizr.tbsmartho.me
-      #- traefik.docker.network=traefik_public
       - traefik.port=80
       - traefik.enable=true
 
   portainer:
     container_name: portainer
     image: portainer/portainer
-    # ports:
-    #   - 9000:9000
+    ports:
+      - 9000:9000
     volumes:
       - ${HOMEDIR}/portainer:/data:rw
       - /var/run/docker.sock:/var/run/docker.sock
@@ -142,10 +160,35 @@ services:
       - traefik.port=9000
       - traefik.enable=true
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ${HOMEDIR}/prometheus/:/etc/prometheus/
+      - ${HOMEDIR}/prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Australia/Sydney
+    user: "1000"
+    ports:
+      - 9090:9090
+
   radarr:
     container_name: "radarr"
     image: linuxserver/radarr
     restart: always
+    depends_on:
+      - jackett
+      - transmission
     volumes:
       - ${HOMEDIR}/radarr:/config
       - ${PCDIR}/Movies:/movies
@@ -167,6 +210,9 @@ services:
     container_name: "lidarr"
     image: linuxserver/lidarr
     restart: always
+    depends_on:
+      - jackett
+      - transmission
     volumes:
       - ${HOMEDIR}/lidarr:/config
       - ${PCDIR}/Music:/music
@@ -209,6 +255,9 @@ services:
     container_name: "sonarr"
     image: linuxserver/sonarr
     restart: always
+    depends_on:
+      - jackett
+      - transmission
     volumes:
       - ${HOMEDIR}/sonarr:/config:rw
       - ${PCDIR}/TVShows:/tv:rw
@@ -328,43 +377,27 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --schedule "0 0 4 * * *" --cleanup
-    
-  phpipam:
-    container_name: phpipam
-    image: pierrecdn/phpipam
-    ports: 
-      - 8888:80
+
+  node-red:
+    container_name: node-red
+    image: nodered/node-red-docker:v8
+    ports:
+      - 1880:1880
+    volumes:
+      - ${HOMEDIR}/nodered:/data
+    restart: always
+    depends_on:
+      - homeassistant
+    user: "1000"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - TZ=Australia/Sydney
-      - MYSQL_ENV_MYSQL_USER=${MYSQL_PHPIPAM_USER}
-      - MYSQL_ENV_MYSQL_PASSWORD=${MYSQL_PHPIPAM_PASSWORD}
-      - MYSQL_ENV_MYSQL_DB=${MYSQL_PHPIPAM_DATABASE}
-      - MYSQL_ENV_MYSQL_HOST=192.168.15.20
-
-  # node-red:
-  #   container_name: node-red
-  #   image: nodered/node-red-docker:rpi-v8
-  #   ports:
-  #     - 1880:1880
-  #   volumes:
-  #     - /home/pi/smarthome/node-red:/data
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - /etc/timezone:/etc/timezone:ro
-  #   restart: "no" # because the exit code(s) are wrong
-  #   depends_on:
-  #     mosquitto:
-  #       condition: service_started
-  #     # mqtt-bridge:
-  #       # condition: service_started
-  #     homeassistant:
-  #       condition: service_healthy
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://127.0.0.1:1880"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 5
+      - TZ = Australia/Sydney
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:1880"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   # mosquitto:
   #   container_name: mosquitto
@@ -408,17 +441,29 @@ services:
   grafana:
     container_name: grafana
     image: grafana/grafana
+    depends_on:
+      - influxdb
     ports:
       - 3000:3000
     volumes:
       - ${HOMEDIR}/grafana:/var/lib/grafana
+      - ${HOMEDIR}/grafana:/etc/grafana
       - /etc/timezone:/etc/timezone:ro
     restart: on-failure
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ = Australia/Sydney
+    labels:
+      - traefik.frontend.rule=Host:grafana.tbsmartho.me
+      - traefik.port=3000
+      - traefik.enable=true
     network_mode: host
+    healthcheck:
+      test: ["CMD", "curl", "-sI", "http://127.0.0.1:3000/ping"]
+      interval: 30s
+      timeout: 1s
+      retries: 24
     user: ${PUID}
 
   influxdb:
@@ -440,6 +485,50 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=Australia/Sydney
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - ${HOMEDIR}/db:/var/lib/mysql:rw,delegated
+
+  ipam:
+    container_name: ipam
+    depends_on:
+      - mysql
+    image: pierrecdn/phpipam
+    environment:
+      - MYSQL_ENV_MYSQL_USER=root
+      - MYSQL_ENV_MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ENV_MYSQL_HOST=192.168.15.20
+    ports:
+      - "1800:80"
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    depends_on:
+      - mysql
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Australia/Sydney
+    ports:
+      - 8100:8080
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
 networks:
   external:

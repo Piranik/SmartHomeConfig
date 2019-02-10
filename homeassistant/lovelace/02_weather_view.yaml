@@ -39,6 +39,30 @@ cards:
       - sensor.netatmo_outdoor_min_temp
       - sensor.netatmo_outdoor_radio
   - type: custom:mini-graph-card
+    name: Indoor Min/Max Temperature
+    icon: mdi:weather-cloudy
+    animate: true
+    hours_to_show: 72
+    entities:
+      - entity: sensor.netatmo_indoor_max_temp
+        name: Max Temp
+        labels: true
+      - entity: sensor.netatmo_indoor_min_temp
+        name: Min Temp
+        labels: true
+  - type: custom:mini-graph-card
+    name: Outdoor Min/Max Temperature
+    icon: mdi:weather-cloudy
+    animate: true
+    hours_to_show: 72
+    entities:
+      - entity: sensor.netatmo_outdoor_max_temp
+        name: Max Temp
+        labels: true
+      - entity: sensor.netatmo_outdoor_min_temp
+        name: Min Temp
+        labels: true
+  - type: custom:mini-graph-card
     name: Bom Temperature
     icon: mdi:weather-cloudy
     animate: true

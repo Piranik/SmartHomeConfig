@@ -1,7 +1,7 @@
 platform: glances
-host: !secret glances_smarthome_ipaddress
-port: !secret glances_smarthome_port
-name: Smarthome
+host: !secret glances_ipaddress
+port: !secret glances_port
+name: TBSmartHome
 version: 3
 resources:
   - disk_use_percent

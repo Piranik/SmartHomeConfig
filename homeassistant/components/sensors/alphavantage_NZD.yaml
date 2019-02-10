@@ -1,0 +1,6 @@
+platform: alpha_vantage
+api_key: !secret alphavantage_apikey
+foreign_exchange:
+  - name: AUD_NZD
+    from: AUD
+    to: NZD

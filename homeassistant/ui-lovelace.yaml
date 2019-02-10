@@ -15,7 +15,7 @@ resources:
   type: js
 - url: /local/useful-markdown-card.js?v=dfc268
   type: js
-- url: /local/mini-graph-card-bundle.js?v=0.2.1
+- url: /local/mini-graph-card-bundle.js?v=0.2.2
   type: module
 - url: /local/custom-lovelace/compact-custom-header/compact-custom-header.js?v=0.2.9
   type: js
@@ -298,6 +298,30 @@ views:
     - sensor.netatmo_outdoor_min_temp
     - sensor.netatmo_outdoor_radio
   - type: custom:mini-graph-card
+    name: Indoor Min/Max Temperature
+    icon: mdi:weather-cloudy
+    animate: true
+    hours_to_show: 72
+    entities:
+    - entity: sensor.netatmo_indoor_max_temp
+      name: Max Temp
+      labels: true
+    - entity: sensor.netatmo_indoor_min_temp
+      name: Min Temp
+      labels: true
+  - type: custom:mini-graph-card
+    name: Outdoor Min/Max Temperature
+    icon: mdi:weather-cloudy
+    animate: true
+    hours_to_show: 72
+    entities:
+    - entity: sensor.netatmo_outdoor_max_temp
+      name: Max Temp
+      labels: true
+    - entity: sensor.netatmo_outdoor_min_temp
+      name: Min Temp
+      labels: true
+  - type: custom:mini-graph-card
     name: Bom Temperature
     icon: mdi:weather-cloudy
     animate: true
@@ -458,12 +482,21 @@ views:
     - sensor.ipv6_address_eno1
     - sensor.external_ipv4
     - sensor.last_boot
-    - sensor.disk_free
-    - sensor.disk_use_percent
-    - sensor.processor_use
-    - sensor.memory_use_percent
-    - sensor.memory_free
-    - sensor.memory_use
+    - sensor.tbsmarthome_cpu_load
+    - sensor.tbsmarthome_cpu_temp
+    - sensor.tbsmarthome_disk_free
+    - sensor.tbsmarthome_disk_used
+    - sensor.tbsmarthome_disk_used_2
+    - sensor.tbsmarthome_ram_free
+    - sensor.tbsmarthome_ram_used
+    - sensor.tbsmarthome_ram_used_2
+    - sensor.tbsmarthome_running
+    - sensor.tbsmarthome_sleeping
+    - sensor.tbsmarthome_swap_free
+    - sensor.tbsmarthome_swap_used
+    - sensor.tbsmarthome_swap_used_2
+    - sensor.tbsmarthome_thread
+    - sensor.tbsmarthome_total
     - sensor.network_in_eno1
     - sensor.network_out_eno1
   - type: horizontal-stack
@@ -471,33 +504,20 @@ views:
     - type: gauge
       name: CPU Temp
       unit: °C
-      entity: sensor.cpu_temperature
-      severity:
-        green: 0
-        yellow: 50
-        red: 60
+      entity: sensor.tbsmarthome_cpu_temp
     - type: gauge
       name: Disk Usage
       unit: '%'
-      entity: sensor.disk_use_percent
+      entity: sensor.tbsmarthome_disk_used
   - type: horizontal-stack
     cards:
     - type: gauge
-      name: CPU Usage
-      unit: '%'
-      entity: sensor.processor_use
-      severity:
-        green: 0
-        yellow: 25
-        red: 50
+      name: CPU Load
+      entity: sensor.tbsmarthome_cpu_load
     - type: gauge
       name: Memory Usage
       unit: '%'
-      entity: sensor.memory_use_percent
-      severity:
-        green: 0
-        yellow: 35
-        red: 50
+      entity: sensor.tbsmarthome_ram_used_2
   - type: entities
     title: Status
     show_header_toggle: false
@@ -647,6 +667,8 @@ views:
     - sensor.transmission_up_speed
     - sensor.transmission_active_torrents
     - sensor.transmission_paused_torrents
+    - sensor.transmission_started_torrents
+    - sensor.transmission_completed_torrents
     - sensor.transmission_total_torrents
 
   - type: entities
@@ -879,11 +901,7 @@ views:
         - domain: device_tracker
           state: "not_home"
     - type: custom:fold-entity-row
-      head: group.all_geolocation_events
-      group_config:
-        secondary_info: last-changed
-    - type: custom:fold-entity-row
-      head: all.lights
+      head: group.all_lights
       group_config:
         secondary_info: last-changed
     - type: custom:fold-entity-row

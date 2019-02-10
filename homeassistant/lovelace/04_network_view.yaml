@@ -22,12 +22,21 @@ cards:
       - sensor.ipv6_address_eno1
       - sensor.external_ipv4
       - sensor.last_boot
-      - sensor.disk_free
-      - sensor.disk_use_percent
-      - sensor.processor_use
-      - sensor.memory_use_percent
-      - sensor.memory_free
-      - sensor.memory_use
+      - sensor.tbsmarthome_cpu_load
+      - sensor.tbsmarthome_cpu_temp
+      - sensor.tbsmarthome_disk_free
+      - sensor.tbsmarthome_disk_used
+      - sensor.tbsmarthome_disk_used_2
+      - sensor.tbsmarthome_ram_free
+      - sensor.tbsmarthome_ram_used
+      - sensor.tbsmarthome_ram_used_2
+      - sensor.tbsmarthome_running
+      - sensor.tbsmarthome_sleeping
+      - sensor.tbsmarthome_swap_free
+      - sensor.tbsmarthome_swap_used
+      - sensor.tbsmarthome_swap_used_2
+      - sensor.tbsmarthome_thread
+      - sensor.tbsmarthome_total
       - sensor.network_in_eno1
       - sensor.network_out_eno1
   - type: horizontal-stack
@@ -35,33 +44,20 @@ cards:
       - type: gauge
         name: CPU Temp
         unit: °C
-        entity: sensor.cpu_temperature
-        severity:
-          green: 0
-          yellow: 50
-          red: 60
+        entity: sensor.tbsmarthome_cpu_temp
       - type: gauge
         name: Disk Usage
         unit: '%'
-        entity: sensor.disk_use_percent
+        entity: sensor.tbsmarthome_disk_used
   - type: horizontal-stack
     cards:
       - type: gauge
-        name: CPU Usage
-        unit: '%'
-        entity: sensor.processor_use
-        severity:
-          green: 0
-          yellow: 25
-          red: 50
+        name: CPU Load
+        entity: sensor.tbsmarthome_cpu_load
       - type: gauge
         name: Memory Usage
         unit: '%'
-        entity: sensor.memory_use_percent
-        severity:
-          green: 0
-          yellow: 35
-          red: 50
+        entity: sensor.tbsmarthome_ram_used_2
   - type: entities
     title: Status
     show_header_toggle: false

@@ -11,7 +11,7 @@ resources:
     type: js
   - url: /local/useful-markdown-card.js?v=dfc268
     type: js
-  - url: /local/mini-graph-card-bundle.js?v=0.2.1
+  - url: /local/mini-graph-card-bundle.js?v=0.2.2
     type: module
   - url: /local/custom-lovelace/compact-custom-header/compact-custom-header.js?v=0.2.9
     type: js

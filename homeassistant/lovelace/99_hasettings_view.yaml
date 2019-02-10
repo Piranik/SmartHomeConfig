@@ -70,11 +70,7 @@ cards:
             - domain: device_tracker
               state: "not_home"
       - type: custom:fold-entity-row
-        head: group.all_geolocation_events
-        group_config:
-          secondary_info: last-changed
-      - type: custom:fold-entity-row
-        head: all.lights
+        head: group.all_lights
         group_config:
           secondary_info: last-changed
       - type: custom:fold-entity-row

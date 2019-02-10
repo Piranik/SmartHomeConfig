@@ -1,0 +1,15 @@
+transmission:
+  host: !secret transmission_host
+  port: !secret transmission_port
+  username: !secret transmission_username
+  password: !secret transmission_password
+  turtle_mode: true
+  monitored_conditions:
+    - current_status
+    - download_speed
+    - upload_speed
+    - active_torrents
+    - paused_torrents
+    - started_torrents
+    - completed_torrents
+    - total_torrents
