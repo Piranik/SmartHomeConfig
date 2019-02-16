@@ -1,0 +1,29 @@
+###############################################################################
+# Home Assistant Package - Device Tracker -> NMap
+#  @author         :   Thomas Baxter
+#  @date           :   16/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for Device Tracker using NMap
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+# homeassistant:
+#   customize:
+
+###############################################################################
+## Device Tracker
+###############################################################################
+device_tracker:
+  - platform: nmap_tracker
+    home_interval: 10
+    hosts: !secret nmap_hosts
+    new_device_defaults:
+      track_new_devices: true
+    scan_options: " --privileged -F -n --host-timeout 5s "
+    exclude:
+      - !secret nmap_exclude_ip1
+      - !secret nmap_exclude_ip2
+      - !secret nmap_exclude_ip3
