@@ -52,12 +52,13 @@ cards:
   - type: horizontal-stack
     cards:
       - type: gauge
-        name: CPU Load
-        entity: sensor.tbsmarthome_cpu_load
+        name: Swap Used
+        unit: '%'
+        entity: sensor.tbsmarthome_swap_used
       - type: gauge
         name: Memory Usage
         unit: '%'
-        entity: sensor.tbsmarthome_ram_used_2
+        entity: sensor.tbsmarthome_ram_used
   - type: entities
     title: Status
     show_header_toggle: false

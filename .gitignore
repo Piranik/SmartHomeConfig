@@ -31,6 +31,12 @@ homeassistant/.cloud
 homeassistant/.storage
 homeassistant/deps
 homeassistant/tts
+homeassistant/.uuid
+hass_dev/.cloud
+hass_dev/.storage
+hass_dev/deps
+hass_dev/tts
+hass_dev/.uuid
 .c9
 db
 dockermon
@@ -57,3 +63,9 @@ homeassistant/secrets.yaml
 homeassistant/core
 homeassistant/.homekit.state
 homeassistant/known_devices.yaml
+hass_dev/.spotify-token-cache
+hass_dev/ip_bans.yaml
+hass_dev/secrets.yaml
+hass_dev/core
+hass_dev/.homekit.state
+hass_dev/known_devices.yaml

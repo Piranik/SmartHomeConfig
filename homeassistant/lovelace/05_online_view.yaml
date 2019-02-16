@@ -16,6 +16,10 @@ cards:
         url: !secret sonarr_url
         icon: mdi:television
       - type: weblink
+        name: Radarr
+        url: !secret radarr_url
+        icon: mdi:television
+      - type: weblink
         name: Transmission
         url: !secret transmission_url
         icon: mdi:download
@@ -40,14 +44,38 @@ cards:
           - sensor.sonarr_queue
           - sensor.sonarr_wanted
 
-      - type: history-graph
-        title: Sonarr Stats
+      # - type: history-graph
+      #   title: Sonarr Stats
+      #   hours_to_show: 168
+      #   entities:
+      #     - entity: sensor.sonarr_upcoming
+      #       name: Airing Soon
+      #     - entity: sensor.sonarr_wanted
+      #       name: Yet to Download
+
+      - type: custom:mini-graph-card
+        name: Sonarr - Episodes Wanted
+        animate: true
         hours_to_show: 168
+        points_per_hour: 0.25
+        entities:
+          - entity: sensor.sonarr_wanted
+            name: Yet to Download
+        show:
+          labels: true
+          extrema: true
+
+      - type: custom:mini-graph-card
+        name: Sonarr - Episodes Airing Soon
+        animate: true
+        hours_to_show: 168
+        points_per_hour: 0.25
         entities:
           - entity: sensor.sonarr_upcoming
             name: Airing Soon
-          - entity: sensor.sonarr_wanted
-            name: Yet to Download
+        show:
+          labels: true
+          extrema: true
 
       - type: custom:upcoming-media-card
         entity: sensor.sonarr_upcoming_media
@@ -81,7 +109,7 @@ cards:
       title: Plex
       show_header_toggle: false
       entities:
-        - sensor.plex
+        - sensor.plex_plex
         - sensor.tautulli
         - sensor.plex_topmovie
         - sensor.plex_toptvshow
@@ -98,7 +126,7 @@ cards:
     title: Transmission
     show_header_toggle: false
     entities:
-      - switch.transmission_alt_speed_limit
+      # - switch.transmission_alt_speed_limit
       - sensor.transmission_status
       - sensor.transmission_down_speed
       - sensor.transmission_up_speed
@@ -108,16 +136,29 @@ cards:
       - sensor.transmission_completed_torrents
       - sensor.transmission_total_torrents
 
-  - type: entities
-    title: SABnzbd
-    show_header_toggle: false
-    entities:
-      - sensor.sabnzbd_status
-      - sensor.sabnzbd_speed
-      - sensor.sabnzbd_queue
-      - sensor.sabnzbd_queue_count
-      - sensor.sabnzbd_left
-      - sensor.sabnzbd_daily_total
-      - sensor.sabnzbd_weekly_total
-      - sensor.sabnzbd_monthly_total
-      - sensor.sabnzbd_total
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: SABnzbd
+      show_header_toggle: false
+      entities:
+        - sensor.sabnzbd_status
+        - sensor.sabnzbd_speed
+        - sensor.sabnzbd_queue
+        - sensor.sabnzbd_queue_count
+        - sensor.sabnzbd_left
+        - sensor.sabnzbd_daily_total
+        - sensor.sabnzbd_weekly_total
+        - sensor.sabnzbd_monthly_total
+        - sensor.sabnzbd_total
+    - type: custom:mini-graph-card
+      name: SABnzbd
+      animate: true
+      hours_to_show: 168
+      points_per_hour: 0.5
+      entities:
+        - sensor.sabnzbd_daily_total
+        - sensor.sabnzbd_weekly_total
+        - sensor.sabnzbd_monthly_total
+      show:
+        labels: true

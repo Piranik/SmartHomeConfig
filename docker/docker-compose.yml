@@ -11,6 +11,22 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
 
+  cadvisor:
+    image: google/cadvisor:v0.32.0
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      #- /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
+    restart: unless-stopped
+    ports:
+      - 8282:8080
+    labels:
+      org.label-schema.group: "monitoring"
+
+
   cloud9:
     container_name: cloud9
     image: kdelfour/cloud9-docker
@@ -56,8 +72,8 @@ services:
       - traefik.port=61208
       - traefik.enable=true
 
-  homeassistant:
-    container_name: homeassistant
+  hass:
+    container_name: hass
     image: homeassistant/home-assistant
     restart: on-failure
     depends_on:
@@ -81,6 +97,35 @@ services:
       - 8123:8123
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:8123"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+
+  hass_dev:
+    container_name: hass_dev
+    image: homeassistant/home-assistant
+    restart: on-failure
+    depends_on:
+      - influxdb
+      - mysql
+      - ha-dockermon
+    volumes:
+      - ${HOMEDIR}/hass_dev:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - traefik.frontend.rule=Host:sandbox.homeassistant.tbsmartho.me
+      - traefik.port=9123
+      - traefik.enable=true
+    network_mode: "host"
+    ports:
+      - 9123:9123
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9123"]
       interval: 30s
       timeout: 10s
       retries: 6
@@ -387,7 +432,7 @@ services:
       - ${HOMEDIR}/nodered:/data
     restart: always
     depends_on:
-      - homeassistant
+      - hass
     user: "1000"
     environment:
       - PUID=${PUID}
@@ -503,17 +548,17 @@ services:
     volumes:
       - ${HOMEDIR}/db:/var/lib/mysql:rw,delegated
 
-  ipam:
-    container_name: ipam
-    depends_on:
-      - mysql
-    image: pierrecdn/phpipam
-    environment:
-      - MYSQL_ENV_MYSQL_USER=root
-      - MYSQL_ENV_MYSQL_ROOT_PASSWORD=password
-      - MYSQL_ENV_MYSQL_HOST=192.168.15.20
-    ports:
-      - "1800:80"
+  # ipam:
+  #   container_name: ipam
+  #   depends_on:
+  #     - mysql
+  #   image: pierrecdn/phpipam
+  #   environment:
+  #     - MYSQL_ENV_MYSQL_USER=root
+  #     - MYSQL_ENV_MYSQL_ROOT_PASSWORD=password
+  #     - MYSQL_ENV_MYSQL_HOST=192.168.15.20
+  #   ports:
+  #     - "1800:80"
 
   adminer:
     image: adminer
@@ -529,6 +574,43 @@ services:
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
+
+  alertmanager:
+    image: prom/alertmanager:v0.16.1
+    container_name: alertmanager
+    volumes:
+      - ${HOMEDIR}/alertmanager/:/etc/alertmanager/
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    ports:
+      - 9093:9093
+
+  nodeexporter:
+    image: prom/node-exporter:v0.17.0
+    container_name: nodeexporter
+    user: root
+    privileged: true
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    ports:
+      - 9100:9100
+
+  pushgateway:
+    image: prom/pushgateway:v0.7.0
+    container_name: pushgateway
+    restart: unless-stopped
+    ports:
+      - 9092:9091
 
 networks:
   external:

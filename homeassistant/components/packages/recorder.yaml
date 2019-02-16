@@ -16,6 +16,7 @@ recorder:
       - remote
     entities:
       - sun.sun
+      - sensor.sun_solarangle
       - sensor.date
       - sensor.time
       - sensor.london_time
@@ -47,6 +48,9 @@ recorder:
       - sensor.tbsmarthome_swap_used_2
       - sensor.tbsmarthome_thread
       - sensor.tbsmarthome_total
+      - sensor.tbsmarthome_containers_active
+      - sensor.tbsmarthome_containers_cpu_used
+      - sensor.tbsmarthome_containers_ram_used
       - sensor.network_in_eno1
       - sensor.network_out_eno1
       - sensor.home_assistant_uptime

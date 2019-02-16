@@ -7,7 +7,7 @@ title: tbsmartho.me
 resources:
 - url: /local/upcoming-media-card.js?v=0.3.4
   type: js
-- url: /local/tracker-card.js?v=0.3.0
+- url: /local/tracker-card.js?v=0.3.2
   type: js
 - url: /local/group-card.js?v=0.0.2
   type: js
@@ -15,21 +15,27 @@ resources:
   type: js
 - url: /local/useful-markdown-card.js?v=dfc268
   type: js
-- url: /local/mini-graph-card-bundle.js?v=0.2.2
+- url: /local/mini-graph-card-bundle.js?v=0.2.4
   type: module
 - url: /local/custom-lovelace/compact-custom-header/compact-custom-header.js?v=0.2.9
   type: js
-- url: /local/waze-card/waze-card.js?v=1.1.1
+- url: /local/waze-card/waze-card.js?v=1.2.0
   type: js
-- url: /local/mini-media-player-bundle.js?v=1.0.0
+- url: /local/mini-media-player-bundle.js?v=1.0.1
   type: module
 - url: /local/card-tools.js?v=297fcc
   type: js
 - url: /local/fold-entity-row.js?v=6d11d3
   type: js
-- url: /local/auto-entities.js?v=3cfd04
+- url: /local/auto-entities.js?v=1d85a8
   type: js
 - url: /local/list-card.js?v=v0.0.7
+  type: js
+- url: /local/secondaryinfo-entity-row.js?v=0.0.0
+  type: module
+- url: /local/waze-card.js?v=1.2.0
+  type: js
+- url: /local/vertical-stack-in-card.js?v=0.1.1
   type: js
 - url: https://fonts.googleapis.com/css?family=Roboto+Condensed
   type: css
@@ -62,6 +68,10 @@ views:
     title: 'Weather Forecast'
     show_header_toggle: false
     entities:
+    - entity: sensor.bom_forecast_tamworth_0
+      type: "custom:secondaryinfo-entity-row"
+      secondary_info: "Rain Forecast [[ sensor.bom_forecast_tamworth_0.Possible Rainfall\
+        \ ]]"
     - 'sensor.bom_forecast_tamworth_1'
     - 'sensor.bom_forecast_tamworth_2'
     - 'sensor.bom_forecast_tamworth_3'
@@ -77,28 +87,48 @@ views:
   - type: vertical-stack
     cards:
     - type: custom:mini-graph-card
-      entity: sensor.speedtest_download
+      entities:
+      - sensor.speedtest_download
       name: Download Speed (Speedtest)
       line_width: 5
       hours_to_show: 168
       points_per_hour: 0.25
       fill: true
       animate: true
+      show:
+        labels: true
+        extrema: true
     - type: custom:mini-graph-card
-      entity: sensor.fast_com_download
+      entities:
+      - sensor.fast_com_download
       name: Download Speed (fast.com)
       line_width: 5
       hours_to_show: 168
       points_per_hour: 0.25
       fill: true
       animate: true
+      show:
+        labels: true
+        extrema: true
     - type: custom:mini-graph-card
-      entity: sensor.pi_hole_ads_percentage_blocked_today
+      entities:
+      - sensor.pi_hole_ads_percentage_blocked_today
       name: "Ads Blocked Today (%)"
       line_width: 5
       hours_to_show: 168
       points_per_hour: 0.25
       animate: true
+      show:
+        labels: true
+        extrema: true
+      color_thresholds:
+      - value: 25
+        color: "#f39c12"
+      - value: 50
+        color: "#d35400"
+      - value: 75
+        color: "#c0392b"
+
   # - type: horizontal-stack
   #   cards:
   #     - type: custom:mini-graph-card
@@ -116,53 +146,45 @@ views:
   - type: vertical-stack
     cards:
     - type: custom:mini-graph-card
-      entity: sensor.netatmo_indoor_temperature
+      entities:
+      - sensor.netatmo_indoor_temperature
       name: Indoor Temp
-      line_color_above:
+      color_thresholds:
       - value: 10
-        color: yellow
+        color: blue
+      - value: 20
+        colour: yellow
       - value: 25
         color: orange
       - value: 35
         color: red
-      line_color_below:
-      - value: 10
-        color: white
-      - value: 0
-        color: lightblue
-      - value: -2
-        color: blue
-      - value: -5
-        color: "#000000"
       line_width: 5
       hours_to_show: 72
-      points_per_hour: 0.25
-      extrema: true
+      points_per_hour: 0.5
       animate: true
+      show:
+        labels: true
+        extrema: true
     - type: custom:mini-graph-card
-      entity: sensor.netatmo_outdoor_temperature
+      entities:
+      - sensor.netatmo_outdoor_temperature
       name: Outdoor Temp
-      line_color_above:
+      color_thresholds:
       - value: 10
-        color: yellow
+        color: blue
+      - value: 20
+        colour: yellow
       - value: 25
         color: orange
       - value: 35
         color: red
-      line_color_below:
-      - value: 10
-        color: white
-      - value: 0
-        color: lightblue
-      - value: -2
-        color: blue
-      - value: -5
-        color: "#000000"
       line_width: 5
       hours_to_show: 72
-      points_per_hour: 0.25
-      extrema: true
+      points_per_hour: 0.5
       animate: true
+      show:
+        labels: true
+        extrema: true
 
   - type: entities
     title: Bin Day
@@ -171,15 +193,15 @@ views:
     - sensor.bin_day
     - sensor.bin_type
 
-  # - type: custom:waze-card
-  #   name: Time To...
-  #   entities:
-  #     - entity:  sensor.tom_time_to_home
-  #       zone: zone.home
-  #       name: Home
-  #     - entity:  sensor.tom_time_to_work
-  #       zone: zone.trc
-  #       name: Work
+  - type: custom:waze-card
+    name: Time To...
+    entities:
+    - entity: sensor.tom_time_to_home
+      zone: zone.home
+      name: Home
+    - entity: sensor.tom_time_to_work
+      zone: zone.trc
+      name: Work
 
   - type: custom:mini-graph-card
     name: Fuel Price Graph
@@ -192,6 +214,19 @@ views:
     entities:
     - entity: sensor.fuelcheck_bp_tamworth_p98
     - entity: sensor.fuelcheck_caltex_tamworth_orana_p98
+    show:
+      labels: true
+      extrema: true
+
+  - type: custom:auto-entities
+    card:
+      type: entities
+      title: Active Media Players
+      show_header_toggle: false
+    filter:
+      include:
+      - domain: media_player
+        state: "playing"
 - title: House
   id: House
   icon: mdi:floor-plan
@@ -512,12 +547,13 @@ views:
   - type: horizontal-stack
     cards:
     - type: gauge
-      name: CPU Load
-      entity: sensor.tbsmarthome_cpu_load
+      name: Swap Used
+      unit: '%'
+      entity: sensor.tbsmarthome_swap_used
     - type: gauge
       name: Memory Usage
       unit: '%'
-      entity: sensor.tbsmarthome_ram_used_2
+      entity: sensor.tbsmarthome_ram_used
   - type: entities
     title: Status
     show_header_toggle: false
@@ -579,6 +615,10 @@ views:
       url: !secret sonarr_url
       icon: mdi:television
     - type: weblink
+      name: Radarr
+      url: !secret radarr_url
+      icon: mdi:television
+    - type: weblink
       name: Transmission
       url: !secret transmission_url
       icon: mdi:download
@@ -603,14 +643,38 @@ views:
       - sensor.sonarr_queue
       - sensor.sonarr_wanted
 
-    - type: history-graph
-      title: Sonarr Stats
+      # - type: history-graph
+      #   title: Sonarr Stats
+      #   hours_to_show: 168
+      #   entities:
+      #     - entity: sensor.sonarr_upcoming
+      #       name: Airing Soon
+      #     - entity: sensor.sonarr_wanted
+      #       name: Yet to Download
+
+    - type: custom:mini-graph-card
+      name: Sonarr - Episodes Wanted
+      animate: true
       hours_to_show: 168
+      points_per_hour: 0.25
+      entities:
+      - entity: sensor.sonarr_wanted
+        name: Yet to Download
+      show:
+        labels: true
+        extrema: true
+
+    - type: custom:mini-graph-card
+      name: Sonarr - Episodes Airing Soon
+      animate: true
+      hours_to_show: 168
+      points_per_hour: 0.25
       entities:
       - entity: sensor.sonarr_upcoming
         name: Airing Soon
-      - entity: sensor.sonarr_wanted
-        name: Yet to Download
+      show:
+        labels: true
+        extrema: true
 
     - type: custom:upcoming-media-card
       entity: sensor.sonarr_upcoming_media
@@ -644,7 +708,7 @@ views:
       title: Plex
       show_header_toggle: false
       entities:
-      - sensor.plex
+      - sensor.plex_plex
       - sensor.tautulli
       - sensor.plex_topmovie
       - sensor.plex_toptvshow
@@ -661,7 +725,7 @@ views:
     title: Transmission
     show_header_toggle: false
     entities:
-    - switch.transmission_alt_speed_limit
+      # - switch.transmission_alt_speed_limit
     - sensor.transmission_status
     - sensor.transmission_down_speed
     - sensor.transmission_up_speed
@@ -671,19 +735,32 @@ views:
     - sensor.transmission_completed_torrents
     - sensor.transmission_total_torrents
 
-  - type: entities
-    title: SABnzbd
-    show_header_toggle: false
-    entities:
-    - sensor.sabnzbd_status
-    - sensor.sabnzbd_speed
-    - sensor.sabnzbd_queue
-    - sensor.sabnzbd_queue_count
-    - sensor.sabnzbd_left
-    - sensor.sabnzbd_daily_total
-    - sensor.sabnzbd_weekly_total
-    - sensor.sabnzbd_monthly_total
-    - sensor.sabnzbd_total
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: SABnzbd
+      show_header_toggle: false
+      entities:
+      - sensor.sabnzbd_status
+      - sensor.sabnzbd_speed
+      - sensor.sabnzbd_queue
+      - sensor.sabnzbd_queue_count
+      - sensor.sabnzbd_left
+      - sensor.sabnzbd_daily_total
+      - sensor.sabnzbd_weekly_total
+      - sensor.sabnzbd_monthly_total
+      - sensor.sabnzbd_total
+    - type: custom:mini-graph-card
+      name: SABnzbd
+      animate: true
+      hours_to_show: 168
+      points_per_hour: 0.5
+      entities:
+      - sensor.sabnzbd_daily_total
+      - sensor.sabnzbd_weekly_total
+      - sensor.sabnzbd_monthly_total
+      show:
+        labels: true
 - title: Lights
   icon: mdi:lightbulb
   cards:
@@ -712,10 +789,11 @@ views:
   - type: custom:mini-graph-card
     name: Overhead Aircraft
     animate: true
-    hours_to_show: 168
-    points_per_hour: 1
-    line_color:
-    - blue
+    hours_to_show: 72
+    points_per_hour: 0.8
+    show:
+      labels: true
+      extrema: true
     entities:
     - entity: sensor.opensky
 - title: Docker
@@ -735,6 +813,14 @@ views:
       name: Portainer
       url: http://tbsmartho.me:9000
       icon: mdi:router-wireless
+
+  - type: entities
+    title: Data from Glances
+    show_header_toggle: false
+    entities:
+    - sensor.tbsmarthome_containers_active
+    - sensor.tbsmarthome_containers_cpu_used
+    - sensor.tbsmarthome_containers_ram_used
 
   - type: entities
     title: Docker
@@ -772,6 +858,23 @@ views:
     clock_am_pm: false
   - type: vertical-stack
     cards:
+    - type: gauge
+      name: Chaffey Dam
+      unit: '%'
+      entity: sensor.chaffey_dam
+    - type: custom:mini-graph-card
+      name: Chaffey Dam
+      hours_to_show: 168
+      entities:
+      - sensor.chaffey_dam
+      points_per_hour: 1
+      animate: true
+      show:
+        labels: true
+        extrema: true
+
+  - type: vertical-stack
+    cards:
     - type: entities
       title: Exchange Rates
       show_header_toggle: false
@@ -780,15 +883,50 @@ views:
       - sensor.aud_to_gbp
       - sensor.aud_to_eur
       - sensor.aud_to_nzd
-    - type: custom:mini-graph-card
-      name: Exchange Rates (Last Week)
-      hours_to_show: 168
-      points_per_hour: 0.25
-      entities:
-      - sensor.aud_to_usd
-      - sensor.aud_to_gbp
-      - sensor.aud_to_eur
-      - sensor.aud_to_nzd
+    - type: horizontal-stack
+      cards:
+      - type: custom:mini-graph-card
+        name: AUD -> USD (Last Week)
+        hours_to_show: 168
+        entities:
+        - sensor.aud_to_usd
+        points_per_hour: 0.5
+        animate: true
+        show:
+          labels: true
+          extrema: true
+      - type: custom:mini-graph-card
+        name: AUD -> GBP (Last Week)
+        hours_to_show: 168
+        entities:
+        - sensor.aud_to_gbp
+        points_per_hour: 0.5
+        animate: true
+        show:
+          labels: true
+          extrema: true
+    - type: horizontal-stack
+      cards:
+      - type: custom:mini-graph-card
+        name: AUD -> EUR (Last Week)
+        hours_to_show: 168
+        entities:
+        - sensor.aud_to_eur
+        points_per_hour: 0.5
+        animate: true
+        show:
+          labels: true
+          extrema: true
+      - type: custom:mini-graph-card
+        name: AUD -> NZD (Last Week)
+        hours_to_show: 168
+        entities:
+        - sensor.aud_to_nzd
+        points_per_hour: 0.5
+        animate: true
+        show:
+          labels: true
+          extrema: true
 
   - type: custom:list-card
     icon: mdi:access-point

@@ -1,6 +1,6 @@
 platform: waze_travel_time
-name: Tom - Time to Home
+name: Tom - Time to Work
 origin: device_tracker.tb_iphonex
-destination: zone.home
-region: AU
+destination: zone.trc
+region: EU
 realtime: true

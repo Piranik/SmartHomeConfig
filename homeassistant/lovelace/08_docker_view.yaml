@@ -13,6 +13,14 @@ cards:
         icon: mdi:router-wireless
 
   - type: entities
+    title: Data from Glances
+    show_header_toggle: false
+    entities:
+      - sensor.tbsmarthome_containers_active
+      - sensor.tbsmarthome_containers_cpu_used
+      - sensor.tbsmarthome_containers_ram_used
+
+  - type: entities
     title: Docker
     show_header_toggle: false
     entities:

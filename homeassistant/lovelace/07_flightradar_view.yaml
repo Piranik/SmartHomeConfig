@@ -6,9 +6,10 @@ cards:
   - type: custom:mini-graph-card
     name: Overhead Aircraft
     animate: true
-    hours_to_show: 168
-    points_per_hour: 1
-    line_color:
-      - blue
+    hours_to_show: 72
+    points_per_hour: 0.8
+    show:
+      labels: true 
+      extrema: true
     entities:
     - entity: sensor.opensky
