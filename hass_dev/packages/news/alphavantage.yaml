@@ -1,0 +1,102 @@
+###############################################################################
+# Home Assistant Package - Alphavantage
+#  @author         :   Thomas Baxter
+#  @date           :   17/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for Alphavantage
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+homeassistant:
+  customize:
+    sensor.aud_to_usd:
+      icon: mdi:currency-usd
+    sensor.aud_to_gbp:
+      icon: mdi:currency-gbp
+    sensor.aud_to_nzd:
+      icon: mdi:currency-usd
+    sensor.aud_to_eur:
+      icon: mdi:currency-eur
+
+###############################################################################
+## Group
+###############################################################################
+group:
+  group:
+    name: Currency
+    control: hidden
+    entities:
+      - sensor.aud_to_usd
+      - sensor.aud_to_gbp
+      - sensor.aud_to_eur
+      - sensor.aud_to_nzd
+
+###############################################################################
+## Transmission
+###############################################################################
+sensor:
+  ###
+  ## AUD to EUR
+  ###
+  - platform: alpha_vantage
+    api_key: !secret alphavantage_apikey
+    foreign_exchange:
+      - name: AUD_EUR
+        from: AUD
+        to: EUR
+  ###
+  ## AUD to GBP
+  ###
+  - platform: alpha_vantage
+    api_key: !secret alphavantage_apikey
+    foreign_exchange:
+      - name: AUD_GBP
+        from: AUD
+        to: GBP
+  ###
+  ## AUD to NZD
+  ###
+  - platform: alpha_vantage
+    api_key: !secret alphavantage_apikey
+    foreign_exchange:
+      - name: AUD_NZD
+        from: AUD
+        to: NZD
+  ###
+  ## AUD to USD
+  ###
+  - platform: alpha_vantage
+    api_key: !secret alphavantage_apikey
+    foreign_exchange:
+      - name: AUD_USD
+        from: AUD
+        to: USD
+  ###
+  ## Template
+  ###
+  - platform: template
+    sensors:
+      aud_to_gbp:
+        unit_of_measurement: 'GBP'
+        value_template: "{{ states.sensor.aud_gbp.state|round(3) }}"
+        friendly_name: 'AUD to GBP'
+      aud_to_usd:
+        unit_of_measurement: 'USD'
+        value_template: "{{ states.sensor.aud_usd.state|round(3) }}"
+        friendly_name: 'AUD to USD'
+      aud_to_nzd:
+        unit_of_measurement: 'NZD'
+        value_template: "{{ states.sensor.aud_nzd.state|round(3) }}"
+        friendly_name: 'AUD to NZD'
+      aud_to_eur:
+        unit_of_measurement: 'EUR'
+        value_template: "{{ states.sensor.aud_eur.state|round(3) }}"
+        friendly_name: 'AUD to EUR'
+###############################################################################
+## Weblink
+###############################################################################
+# weblink:
+#   entities:
