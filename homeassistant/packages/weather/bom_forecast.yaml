@@ -1,0 +1,81 @@
+###############################################################################
+# Home Assistant Package - Weather -> BOM Forecast
+#  @author         :   Thomas Baxter
+#  @date           :   17/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for BOM Forecast
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+# homeassistant:
+#   customize:
+
+###############################################################################
+## Group
+###############################################################################
+group:
+  weather_bomforecast:
+    name: BOM Forecast (Tamworth Airport)
+    control: hidden
+    entities:
+      - sensor.bom_forecast_tamworth_0
+      - sensor.bom_forecast_tamworth_1
+      - sensor.bom_forecast_tamworth_2
+      - sensor.bom_forecast_tamworth_3
+      - sensor.bom_forecast_tamworth_4
+      - sensor.bom_forecast_tamworth_5
+      - sensor.bom_forecast_tamworth_6
+  weather_bomforecastrain:
+    name: BOM Rain Forecast (Tamworth Airport)
+    control: hidden
+    entities:
+      - sensor.bom_forecast_tamworth_rain_0
+      - sensor.bom_forecast_tamworth_rain_1
+      - sensor.bom_forecast_tamworth_rain_2
+      - sensor.bom_forecast_tamworth_rain_3
+      - sensor.bom_forecast_tamworth_rain_4
+      - sensor.bom_forecast_tamworth_rain_5
+      - sensor.bom_forecast_tamworth_rain_6
+
+###############################################################################
+## Transmission
+###############################################################################
+sensor:
+  ###
+  ## BOM Forecast
+  ###
+  - platform: bom_forecast
+    product_id: IDN11113
+    name: Tamworth
+    forecast_days: 6
+    rest_of_today: True
+    friendly: True
+    friendly_state_format: '{min} to {max}, {summary}'
+    monitored_conditions:
+      - 'max'
+      - 'min'
+      - 'summary'
+      - 'detailed_summary'
+
+  ###
+  ## BOM Forecast (Rain)
+  ###
+  - platform: bom_forecast
+    product_id: IDN11113
+    name: Tamworth - Rain
+    forecast_days: 6
+    rest_of_today: True
+    friendly: True
+    friendly_state_format: '{chance_of_rain}, {possible_rainfall}'
+    monitored_conditions:
+      - 'chance_of_rain'
+      - 'possible_rainfall'
+
+###############################################################################
+## Weblink
+###############################################################################
+# weblink:
+#   entities:

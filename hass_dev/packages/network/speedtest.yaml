@@ -1,0 +1,49 @@
+###############################################################################
+# Home Assistant Package - Speed Test
+#  @author         :   Thomas Baxter
+#  @date           :   16/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for Speed Test
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+# homeassistant:
+#   customize:
+
+###############################################################################
+## Time
+###############################################################################
+group:
+  speedtest:
+    name: Speedtest
+    control: hidden
+    entities:
+      - sensor.speedtest_ping
+      - sensor.speedtest_download
+      - sensor.speedtest_upload
+
+###############################################################################
+## Sensors
+###############################################################################
+sensor:
+  ###
+  ## Speedtest
+  ###
+  - platform: speedtest
+    minute: 30
+    hour:
+      - 0
+      - 3
+      - 6
+      - 9
+      - 12
+      - 15
+      - 18
+      - 21
+    monitored_conditions:
+      - ping
+      - download
+      - upload

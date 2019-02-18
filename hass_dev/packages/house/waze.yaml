@@ -1,0 +1,107 @@
+###############################################################################
+# Home Assistant Package - Waze
+#  @author         :   Thomas Baxter
+#  @date           :   17/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for Waze
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+# homeassistant:
+#   customize:
+
+###############################################################################
+## Group
+###############################################################################
+group:
+  waze:
+    name: Waze
+    control: hidden
+    entities:
+      - sensor.tom_time_to_home
+      - sensor.tom_time_to_work
+      - input_select.waze_origin
+      - input_select.waze_destination
+      - sensor.me_to_destination
+
+input_select:
+  waze_origin:
+    name: Origin
+    options:
+      - Home
+      - Work
+      - Mum and Dad
+    initial: Home
+  waze_destination:
+    name: Destination
+    options:
+      - Home
+      - Work
+      - Mum and Dad
+      - Airport
+    initial: Work
+
+###############################################################################
+## Sensor
+###############################################################################
+sensor:
+  ###
+  ## Waze - Tom to Home
+  ###
+  - platform: waze_travel_time
+    name: Tom - Time to Home
+    origin: device_tracker.tb_iphonex
+    destination: zone.home
+    region: EU
+    realtime: true
+  ###
+  ## Waze - Tom to Work
+  ###
+  - platform: waze_travel_time
+    name: Tom - Time to Work
+    origin: device_tracker.tb_iphonex
+    destination: zone.work
+    region: EU
+    realtime: true
+
+  - platform: template
+    sensors:
+       origin_address:
+         value_template: >-
+            {%- if is_state("input_select.destination", "Home")  -%}
+              184 Brisbane St, East Tamworth NSW 2340, Australia
+            {%- elif is_state("input_select.destination", "Work")  -%}
+              437 Peel St, Tamworth NSW 2340, Australia
+            {%- elif is_state("input_select.destination", "Mum and Dad")  -%}
+              184 Brisbane St, East Tamworth NSW 2340, Australia
+            {%- else -%}
+              Unknown
+            {%- endif %}
+       dest_address:
+         value_template: >-
+            {%- if is_state("input_select.destination", "Home")  -%}
+              184 Brisbane St, East Tamworth NSW 2340, Australia
+            {%- elif is_state("input_select.destination", "Work")  -%}
+              437 Peel St, Tamworth NSW 2340, Australia
+            {%- elif is_state("input_select.destination", "Mum and Dad")  -%}
+              184 Brisbane St, East Tamworth NSW 2340, Australia
+            {%- elif is_state("input_select.destination", "Airport")  -%}
+              -31.08381174,150.84872246&
+            {%- else -%}
+              Unknown
+            {%- endif %}
+
+  - platform: waze_travel_time
+    name: "Me to destination"
+    origin: sensor.origin_address
+    destination: sensor.dest_address
+    region: 'EU'
+
+###############################################################################
+## Weblink
+###############################################################################
+# weblink:
+#   entities:

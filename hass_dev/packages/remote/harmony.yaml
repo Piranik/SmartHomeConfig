@@ -1,0 +1,86 @@
+###############################################################################
+# Home Assistant Package - Harmony
+#  @author         :   Thomas Baxter
+#  @date           :   16/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for Harmony Hub
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+# homeassistant:
+#   customize:
+
+###############################################################################
+## Groups
+###############################################################################
+group:
+  harmonyhub:
+    control: hidden
+    name: Harmony Remote
+    entities:
+      - sensor.harmony_activity
+      - input_select.harmony_input
+
+###############################################################################
+## Inputs
+###############################################################################
+input_select:
+  harmony_input:
+    name: Harmony - Change Input
+    options:
+      - Select Activity
+      - PowerOff
+      - Watch TV
+    initial: Select Activity
+    icon: mdi:remote
+
+###############################################################################
+## Sensors
+###############################################################################
+sensor:
+  - platform: template
+    sensors:
+      harmony_activity:
+        entity_id:
+          - sensor.harmony_activity
+        friendly_name: 'Harmony - Current Activity'
+        value_template: '{{ states.remote.harmony_hub.attributes.current_activity }}'
+        icon_template: >-
+          {% if is_state("sensor.harmony_activity", "Watch TV") %}
+            mdi:television-box
+          {% else %}
+            mdi:monitor
+          {% endif %}
+
+###############################################################################
+## Automations
+###############################################################################
+# automation:
+#   - alias: 'automation_controltv_harmonyhub'
+#     initial_state: true
+#     hide_entity: true
+#     trigger:
+#       - platform: state
+#         entity_id: input_select.harmony_input
+#     action:
+#       - service: remote.turn_on
+#         data_template:
+#           entity_id: remote.harmony_hub
+#           activity: >-
+#             {% if is_state("input_select.harmony_input", "PowerOff") %}-1
+#             {% elif is_state("input_select.harmony_input", "PowerOff") %}36599052
+#             {% endif %}
+#       - service: input_select.select_option
+#         entity_id: input_select.harmony_input
+#         data_template:
+#           option: "Select Activity"
+  # - alias: 'automation_update_harmony_activity'
+  #   trigger:
+  #     platform: time_pattern
+  #     minutes: '/1'
+  #   action:
+  #     - service: homeassistant.update_entity
+  #       entity_id: sensor.harmony_activity

@@ -1,0 +1,81 @@
+###############################################################################
+# Home Assistant Package - Server -> Glances
+#  @author         :   Thomas Baxter
+#  @date           :   18/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for Glances
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+# homeassistant:
+#   customize:
+
+###############################################################################
+## Group
+###############################################################################
+group:
+  glances:
+    name: Glances - TBSmartHome
+    control: hidden
+    entities:
+      - weblink.glances
+      - sensor.glances_tbsmarthome_containers_active
+      - sensor.glances_tbsmarthome_containers_cpu_used
+      - sensor.glances_tbsmarthome_containers_ram_used
+      - sensor.glances_tbsmarthome_cpu_load
+      - sensor.glances_tbsmarthome_cpu_temp
+      - sensor.glances_tbsmarthome_disk_free
+      - sensor.glances_tbsmarthome_disk_used
+      - sensor.glances_tbsmarthome_disk_used_2
+      - sensor.glances_tbsmarthome_ram_free
+      - sensor.glances_tbsmarthome_ram_used
+      - sensor.glances_tbsmarthome_ram_used_2
+      - sensor.glances_tbsmarthome_running
+      - sensor.glances_tbsmarthome_sleeping
+      - sensor.glances_tbsmarthome_swap_free
+      - sensor.glances_tbsmarthome_swap_used
+      - sensor.glances_tbsmarthome_swap_used_2
+      - sensor.glances_tbsmarthome_thread
+      - sensor.glances_tbsmarthome_total
+
+###############################################################################
+## Sensor
+###############################################################################
+sensor:
+  - platform: glances
+    host: !secret glances_ipaddress
+    port: !secret glances_port
+    name: TBSmartHome
+    version: 3
+    entity_namespace: glances
+    resources:
+      - disk_use_percent
+      - disk_use
+      - disk_free
+      - memory_use_percent
+      - memory_use
+      - memory_free
+      - swap_use_percent
+      - swap_use
+      - swap_free
+      - processor_load
+      - process_running
+      - process_total
+      - process_thread
+      - process_sleeping
+      - cpu_temp
+      - docker_active
+      - docker_cpu_use
+      - docker_memory_use
+
+###############################################################################
+## Weblink
+###############################################################################
+weblink:
+  entities:
+    - name: Glances
+      url: !secret glances_url
+      icon: mdi:gauge
