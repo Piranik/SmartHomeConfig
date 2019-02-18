@@ -1,5 +1,0 @@
-platform: command_line
-name: Pi-Hole Status
-command: curl -X GET 'http://192.168.15.30/admin/api.php?status'
-value_template: >
-  {{ value_json.status }}

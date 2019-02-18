@@ -1,8 +1,0 @@
-sensor.aud_to_usd:
-  icon: mdi:currency-usd
-sensor.aud_to_gbp:
-  icon: mdi:currency-gbp
-sensor.aud_to_nzd:
-  icon: mdi:currency-usd
-sensor.aud_to_eur:
-  icon: mdi:currency-eur

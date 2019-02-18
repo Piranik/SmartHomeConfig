@@ -1,9 +1,0 @@
-bedroom_tv:
-  name: Bedroom TV
-  options:
-    - PowerOff
-    - Watch TV
-    - Watch Apple TV
-    - Watch Smart TV
-  initial: PowerOff
-  icon: mdi:monitor

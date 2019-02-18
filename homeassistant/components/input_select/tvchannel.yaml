@@ -1,9 +1,0 @@
-tvchannel:
-  name: TV Channel
-  icon: mdi:television-guide
-  options:
-    - ABC HD
-    - SBS HD
-    - Prime7 HD
-    - NBN HD
-    - WIN HD

@@ -1,4 +1,0 @@
-influxdb:
-  title: InfluxDB
-  icon: mdi:database
-  url: !secret influxdb_url

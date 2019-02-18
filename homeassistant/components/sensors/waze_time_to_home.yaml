@@ -1,6 +1,0 @@
-platform: waze_travel_time
-name: Tom - Time to Home
-origin: device_tracker.tb_iphonex
-destination: zone.home
-region: EU
-realtime: true

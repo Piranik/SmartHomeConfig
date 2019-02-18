@@ -1,7 +1,0 @@
-platform: feedparser
-name: Sydney Morning Herald
-entity_namespace: rssfeeds
-feed_url: https://www.smh.com.au/rss/feed.xml
-inclusions:
-  - title
-  - link
