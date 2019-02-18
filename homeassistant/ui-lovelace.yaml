@@ -1,6 +1,0 @@
-title: tbsmartho.me
-
-resources:
-
-views:
-  - !include lovelace_config/00_home_view.yaml
