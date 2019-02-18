@@ -1,0 +1,4 @@
+recorder:
+  purge_interval: 1
+  purge_keep_days: 14
+  db_url: mysql://root:password@192.168.15.20/homeassistant_dev?charset=utf8

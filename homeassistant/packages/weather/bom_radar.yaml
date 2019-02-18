@@ -1,0 +1,7 @@
+camera:
+  - platform: 'bom_radar'
+    name: moree_256k
+    product_id: IDR532
+  - platform: 'bom_radar'
+    name: namoi_128k
+    product_id: IDR693

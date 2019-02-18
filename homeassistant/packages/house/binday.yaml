@@ -1,0 +1,54 @@
+###############################################################################
+# Home Assistant Package - Bin Day
+#  @author         :   Thomas Baxter
+#  @date           :   18/02/2019
+#  @version        :   0.1
+#  @description    :   Configuration for Bin Day
+#  @changelog      :   v0.1 - Initial Version
+###############################################################################
+
+###############################################################################
+## Customize
+###############################################################################
+homeassistant:
+  customize:
+    sensor.bin_day:
+      friendly_name: Collection Day
+      icon: mdi:truck-delivery
+    sensor.bin_type:
+      friendly_name: Bins to be Collected
+      icon: mdi:delete-empty
+
+###############################################################################
+## Group
+###############################################################################
+group:
+  binday:
+    name: Bin Day
+    control: hidden
+    entities:
+      - sensor.bin_day
+      - sensor.bin_type
+
+###############################################################################
+## Sensors
+###############################################################################
+sensor:
+  ###
+  ## Bin Day
+  ###
+  - platform: command_line
+    name: Bin Day
+    command: "python3 /config/custom_components/tb_binday.py"
+  ###
+  ## Bin Type
+  ###
+  - platform: command_line
+    name: Bin Type
+    command: "python3 /config/custom_components/tb_bintype.py"
+
+###############################################################################
+## Weblink
+###############################################################################
+# weblink:
+#   entities:
